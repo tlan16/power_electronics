@@ -1,0 +1,8 @@
+$begin 'Profile'
+	$begin 'ProfileGroup'
+		StartInfo='Time:  08/18/2014 16:15:52, Host 035-G02-010WL'
+		TotalInfo='Time:  08/18/2014 16:15:54, Status: Normal Completion'
+		ProfileTask('', 0, 0, 0, 0, 0, '', false, true)
+		ProfileTask('Solution Process', 1, 0, 0, 0, 24148, 'Elapsed time : 00:00:01 , SimplorerCOMEngine Memory : 23.6 M', true, true)
+	$end 'ProfileGroup'
+$end 'Profile'

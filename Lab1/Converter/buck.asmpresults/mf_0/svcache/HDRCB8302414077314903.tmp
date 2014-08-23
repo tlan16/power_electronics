@@ -1,0 +1,511 @@
+SimValueCacheVersionID=1
+$begin 'SimValueInfos'
+	NextUniqueID=2
+	MoveBackwards=false
+	$begin 'SimValue'
+		ID=0
+		$begin 'SimValueParams'
+			QuantityName='C1.V'
+			ValueState(68, 9, 1, 1)
+		$end 'SimValueParams'
+	$end 'SimValue'
+	$begin 'SimValue'
+		ID=1
+		$begin 'SimValueParams'
+			QuantityName='L1.I'
+			ValueState(77, 10, 1, 1)
+		$end 'SimValueParams'
+	$end 'SimValue'
+	$begin 'InfoServer2'
+		InfoServer2ID=0
+		$begin 'DesignMap'
+			DesignID=0
+			$begin 'SolutionMap'
+				$begin 'ContextMap'
+					SolutionID=0
+					$begin 'VersionMap'
+						$begin 'ReportTypeSolnDef'
+							ReportType=0
+							SimValueContext(1, 0, 2, 0, false, false, -1, 1, 0, 1, 1, '', 0, 0)
+						$end 'ReportTypeSolnDef'
+						$begin 'Elem'
+							VersionID=0
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=3
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=6
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=8
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=10
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=13
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=14
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=17
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=25
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=27
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=31
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=35
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=39
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=43
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=47
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=51
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=55
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=57
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=59
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=61
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=65
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=76
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=78
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=80
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=82
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=86
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=90
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=92
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=94
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=101
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+						$begin 'Elem'
+							VersionID=105
+							$begin 'InfoAtCtxtVersion'
+								$begin 'QtyValueStateInfo'
+									'C1.V'(68, 9, 1, 1)
+									'L1.I'(77, 10, 1, 1)
+								$end 'QtyValueStateInfo'
+								$begin 'CompQtyInfo'
+								$end 'CompQtyInfo'
+								$begin 'EnumQtyInfo'
+								$end 'EnumQtyInfo'
+								$begin 'EnumReps'
+								$end 'EnumReps'
+							$end 'InfoAtCtxtVersion'
+						$end 'Elem'
+					$end 'VersionMap'
+				$end 'ContextMap'
+			$end 'SolutionMap'
+		$end 'DesignMap'
+	$end 'InfoServer2'
+$end 'SimValueInfos'
+$begin 'SimValueCache'
+	$begin 'DesignMap'
+		DesignID=0
+		$begin 'SolutionMap'
+			$begin 'ContextMap'
+				SolutionID=0
+			$end 'ContextMap'
+		$end 'SolutionMap'
+	$end 'DesignMap'
+$end 'SimValueCache'

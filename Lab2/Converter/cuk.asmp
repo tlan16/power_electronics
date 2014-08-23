@@ -1,0 +1,3099 @@
+$begin 'AnsoftProject'
+	Created='Wed Aug 20 10:38:17 2008'
+	FileOwnedByWorkbench=false
+	Product='Simplorer'
+	NextUniqueID=0
+	MoveBackwards=false
+	$begin 'Desktop'
+		Version(2014, 0)
+		InfrastructureVersion(1, 0)
+	$end 'Desktop'
+	$begin 'SimplorerEnvironment'
+		Version(1, 0)
+	$end 'SimplorerEnvironment'
+	$begin 'SchematicEnvironment'
+		Version(1, 0)
+	$end 'SchematicEnvironment'
+	ReadVersion=1
+	$begin 'DesignMgrEnvironment'
+		CompInstCounter=10
+		GPortCounter=0
+		NetCounter=0
+		Alias('Ieee;Simplorer Elements\\Ieee', 'Std;Simplorer Elements\\Std', 'Basic_VHDLAMS;Simplorer Elements\\Basic Elements VHDLAMS\\Basic Elements VHDLAMS', 'Digital_Elements;Simplorer Elements\\Digital Elements\\Digital Elements', 'Transformations;Simplorer Elements\\Tools\\Transformations\\Transformations', 'HEV_VHDLAMS;Simplorer Elements\\HEV VHDLAMS\\HEV VHDLAMS', 'automotive_vda;Simplorer Elements\\VDALibs VHDLAMS\\automotive_vda', 'example_boardnet;Simplorer Elements\\VDALibs VHDLAMS\\example_boardnet', 'example_ecar;Simplorer Elements\\VDALibs VHDLAMS\\example_ecar', 'fundamentals_vda;Simplorer Elements\\VDALibs VHDLAMS\\fundamentals_vda', 'hybrid_emc_vda;Simplorer Elements\\VDALibs VHDLAMS\\hybrid_emc_vda', 'megma;Simplorer Elements\\VDALibs VHDLAMS\\megma', 'modelica_rotational;Simplorer Elements\\VDALibs VHDLAMS\\modelica_rotational', 'modelica_thermal;Simplorer Elements\\VDALibs VHDLAMS\\modelica_thermal', 'modelica_translational;Simplorer Elements\\VDALibs VHDLAMS\\modelica_translational', 'spice2vhd;Simplorer Elements\\VDALibs VHDLAMS\\spice2vhd', 'spice2vhd_devices;Simplorer Elements\\VDALibs VHDLAMS\\spice2vhd_devices')
+	$end 'DesignMgrEnvironment'
+	$begin 'ProjectDatasets'
+		NextUniqueID=0
+		MoveBackwards=false
+		DatasetType='ProjectDatasetType'
+		$begin 'DatasetDefinitions'
+		$end 'DatasetDefinitions'
+	$end 'ProjectDatasets'
+	$begin 'Definitions'
+		$begin 'Folders'
+			Definitions(1104, 10000, 1, 1, 0, false, false)
+			Materials(1104, 9500, 9, 2, 1, false, false)
+			Scripts(1104, 9501, 33500, 3, 1, false, false)
+			Symbols(1104, 9001, 10, 103, 1, false, false)
+			Components(1104, 9000, 8, 102, 1, false, false)
+			Models(1104, 9004, 13, 106, 1, false, false)
+			Packages(1104, 9005, 33502, 107, 1, false, false)
+		$end 'Folders'
+		$begin 'Materials'
+		$end 'Materials'
+		$begin 'Scripts'
+			$begin 'InstanceName'
+				ScriptLang='vbscript'
+				ScriptText=$begin_cdata$				
+Dim oEditor
+Set oEditor = PropHost.GetEditor("SchematicEditor")
+' first, find the comp being edited
+id = PropHost.GetText("ID")
+eltarray = oEditor.GetSelections
+
+if UBound(eltarray) = 0 then
+' should be exactly one compinst here
+	for each i in eltarray
+		oldval = oEditor.GetPropertyValue ("PassedParameterTab", i, "InstanceName")
+		thisInst = i
+		exit for
+	next
+
+	curval = PropHost.GetText("InstanceName")
+    newval = curval
+	okay = true
+
+	do
+' first, check for any bad characters
+		testval = ReplaceBadChars(newval)
+
+		if testval <> newval then
+			do
+				newval = InputBox("This instance name contains illegal characters - please modify.", "InstanceName Value", newval)
+				if newval = "" then
+					newval = oldval
+					okay = true
+					exit do
+				else
+					testval = ReplaceBadChars(newval)
+				end if
+			loop while testval <> newval
+		end if
+
+		if (newval <> "") and (strComp(oldval, newval, vbTextCompare) <> 0) then
+' then see if this is a duplicate
+			comparray = oEditor.GetAllComponents
+			okay = true
+			for each i in comparray
+				instval = oEditor.GetPropertyValue ("PassedParameterTab", i, "InstanceName")
+				if strComp(instval, newval, vbTextCompare) = 0  then
+					newval2 = InputBox("This instance name is in use already - please modify.", "InstanceName Value", newval)
+
+					if newval2 = "" then
+						newval = oldval
+						ub = -1
+					else
+						newval = newval2
+					end if
+					okay = false
+					exit for
+				end if
+			next
+		else
+			okay = true
+		end if
+	loop while okay = false
+
+	PropHost.SetText "Instancename", (newval)
+end if
+
+Function ReplaceBadChars(name)
+retval = name
+retval = Replace(retval, " ", "_")
+retval = Replace(retval, "	", "_")
+retval = Replace(retval, "-", "_")
+retval = Replace(retval, "+", "_")
+retval = Replace(retval, "*", "_")
+retval = Replace(retval, "/", "_")
+retval = Replace(retval, "@", "_")
+retval = Replace(retval, "!", "_")
+retval = Replace(retval, "~", "_")
+retval = Replace(retval, "#", "_")
+retval = Replace(retval, "$", "_")
+retval = Replace(retval, "%", "_")
+retval = Replace(retval, "^", "_")
+retval = Replace(retval, "&", "_")
+retval = Replace(retval, "=", "_")
+retval = Replace(retval, "`", "_")
+retval = Replace(retval, "", "_")
+retval = Replace(retval, "|", "_")
+retval = Replace(retval, "<", "_")
+retval = Replace(retval, ">", "_")
+retval = Replace(retval, ".", "_")
+retval = Replace(retval, ",", "_")
+retval = Replace(retval, "?", "_")
+retval = Replace(retval, "'", "_")
+retval = Replace(retval, ";", "_")
+retval = Replace(retval, ":", "_")
+ReplaceBadChars = retval
+End Function $end_cdata$
+				ModTime=1272982315
+				Library='Simplorer Elements\\Utility'
+				LibLocation='SysLibrary'
+				ModSinceLib=false
+			$end 'InstanceName'
+			$begin 'CHvalidation'
+				ScriptLang='vbscript'
+				ScriptText=$begin_cdata$ ' script to check whether the value for CH is _Empty or a component value (okay)
+' or a number or variable (not okay) or an expression (also not okay)
+Dim oEditor
+Set oEditor = PropHost.GetEditor("SchematicEditor")
+' first, get the value
+curval = PropHost.GetText("CH")
+newval = curval
+' and then split the value into what should be two parts 
+valarray = Split(curval, ".", -1, 1)
+num = UBound(valarray)
+
+Do
+	singleVal = num < 1 and newval <> "_Empty"
+
+	if IsExpression(newval) = true or singleVal then
+		newval = InputBox("The characteristic reference cannot be a number or expression." + Chr(13) +_
+ "It must be _Empty or the VAL output of a characteristic component." + Chr(13) +_
+ "    Standard characteristic components are:" + Chr(13) +_
+ "        XY, EXP, HYP, CDI, CSP, EQUL, PO2" + Chr(13) +_
+ "    or a VAL array element of" + Chr(13) +_
+ "        NDNL, NDTAB, or NXMY" + Chr(13) +_
+ "Please modify.  An empty string will be converted to _Empty", "CH Value", newval)
+		if newval = "" then
+			newval = "_Empty"
+		end if
+		valarray = Split(newval, ".", -1, 1)
+		num = UBound(valarray)
+	else
+		valarray = Split(newval, ".", -1, 1)
+		num = UBound(valarray)
+		exit do
+	end if
+loop while true
+
+if num = 1 then
+	if IsAppropriateComponent(valarray(0), valarray(1)) = false then
+' bad value
+		ret = MsgBox("The characteristic reference must be _Empty or the VAL output of a characteristic component." + Chr(13) +_
+ "    Standard characteristic components are:" + Chr(13) +_
+ "        XY, EXP, HYP, CDI, CSP, EQUL, PO2" + Chr(13) +_
+ "    or a VAL array element of" + Chr(13) +_
+ "        NDNL, NDTAB, or NXMY" + Chr(13) +_
+ "Is the source a user-defined characteristic component?", vbYesNo, "CH Value")
+		if ret = vbNo then
+			newval = InputBox("Please enter a new value for the characteristic reference", "CH Value", newval)
+		end if
+
+		if newval = "" then
+			newval = "_Empty"
+		end if
+	end if
+end if
+
+Function IsAppropriateComponent(instname, val)
+	retval = false
+	' first, find the instance
+	findarray = oEditor.FindElements( Array("NAME:SearchProps", "Prop:=", Array("InstanceName", instname, 2)), Array("NAME:Parameters", "Filter:=",  _
+		3, "MatchAll:=", true, "MatchCase:=", false, "SearchSubCkt:=", false, "SearchSelectionOnly:=",  false))
+	ub = UBound(findarray)
+
+	if ub = 0 then
+		' then find that instance's component name
+		name = oEditor.GetPropertyValue ( "ComponentTab", findarray(0), "CompName" )
+
+		ctype = 0
+
+		' then see if the name matches the approved set
+		if name = "XY" then
+			ctype = 1
+		elseif name = "EXP" then
+			ctype = 1
+		elseif name = "HYP" then
+			ctype = 1
+		elseif name = "CDI" then
+			ctype = 1
+		elseif name = "CSP" then
+			ctype = 1
+		elseif name = "EQUL" then
+			ctype = 1
+		elseif name = "EPO2" then
+			ctype = 1
+		elseif name = "NDNL" then
+			ctype = 2
+		elseif name = "NDTAB" then
+			ctype = 2
+		elseif name = "NXMY" then
+			ctype = 2
+		end if
+
+		if ctype = 1 and val = "VAL" then
+			retval = true
+		elseif ctype = 2 then
+			proparray = oEditor.GetProperties("Quantities", findarray(0))
+
+			for each i in proparray
+				if i = val then
+					retval = true
+					exit for
+				end if
+			next
+		end if
+	end if
+
+	IsAppropriateComponent = retval
+End Function
+
+Function IsExpression(newval)
+	retval = InStr(newval, " ")
+	retval = retval or InStr(newval, "+")
+	retval = retval or InStr(newval, "-")
+	retval = retval or InStr(newval, "*")
+	retval = retval or InStr(newval, "/")
+	retval = retval or InStr(newval, "^")
+	retval = retval or InStr(newval, "!")
+	retval = retval or InStr(newval, "&")
+	retval = retval or InStr(newval, "|")
+	IsExpression = retval
+End Function
+
+PropHost.SetText "CH", newval $end_cdata$
+				ModTime=1272982315
+				Library='Simplorer Elements\\Utility'
+				LibLocation='SysLibrary'
+				ModSinceLib=false
+			$end 'CHvalidation'
+		$end 'Scripts'
+		$begin 'Symbols'
+			$begin 'cuk'
+				ModTime=1219243100
+				Library=''
+				ModSinceLib=false
+				LibLocation='Project'
+				HighestLevel=1
+				Normalize=true
+				InitialLevels(0, 1)
+				$begin 'Graphics'
+					Rect(0, 1, 0, 0, 0.000423333333333333, 0, 0.000423333333333333, 0.000423333333333333, 0, 0, 0)
+					Rect(0, 0, 0, 0, 0.00254, 0.00127, 0.00508, 0.00254, 0, 0, 0)
+				$end 'Graphics'
+			$end 'cuk'
+			$begin 'S'
+				ModTime=1208550629
+				Library='Simplorer Elements\\Basic Elements\\Circuit\\Ideal Switches'
+				ModSinceLib=false
+				LibLocation='SysLibrary'
+				HighestLevel=3
+				Normalize=true
+				InitialLevels(0, 1, 2)
+				$begin 'PinDef'
+					Pin('CTRL', -0.00254, -0.00254, 0, 'I', 0.0001016, 0.0007112, false, 0, true, '', false, false, 'CTRL', true)
+				$end 'PinDef'
+				$begin 'PinDef'
+					Pin('N1', 0.00254, 0.00508, 4.71239, 'N', 0.0001016, 0.0017272, false, 0, true, '', false, false, 'N1', true)
+				$end 'PinDef'
+				$begin 'PinDef'
+					Pin('N2', 0.00254, -0.00508, 1.5708, 'N', 0.0001016, 0.00254, false, 0, true, '', false, false, 'N2', true)
+				$end 'PinDef'
+				$begin 'Graphics'
+					$begin '-3'
+						Line(0.0003048, 1, 0, 0.00254, 0.003048, 0.00254, -0.00254, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.00254, 0.004572, 0.00254, 0.00254, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.00254, -0.00254, 0.00254, -0.004572, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '-3'
+					$begin '-2'
+						Line(0.0003048, 1, 0, 0.00254, -0.00254, 0, 0.0026416, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.00254, 0.004572, 0.00254, 0.00254, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.00254, -0.00254, 0.00254, -0.004572, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.00254, 0.004572, 0.00254, 0.00254, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.00254, -0.00254, 0.00254, -0.004572, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.00254, 0.004572, 0.00254, 0.00254, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.00254, -0.00254, 0.00254, -0.004572, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.00254, 0.004572, 0.00254, 0.00254, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.00254, -0.00254, 0.00254, -0.004572, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '-2'
+					$begin '-1'
+						Circle(0.0002032, 1, 255, 0.0006604, 0.00381, 0.0003556, 255)
+					$end '-1'
+					$begin '1'
+						Circle(0.0002032, 1, 255, 0.0006604, 0.00381, 0.0003556, 255)
+					$end '1'
+					$begin '2'
+						Line(0.000508, 1, 0, 0.00254, -0.00254, 0, 0.0026416, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '2'
+					$begin '3'
+						Line(0.000508, 1, 0, 0.00254, 0.003048, 0.00254, -0.00254, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '3'
+				$end 'Graphics'
+				$begin 'PropDisplayMap'
+					InstanceName(2, 1, 0, Text(-0.00254, -0.00508, 0, 1, 5, false, 'Arial', 0, '', false, false, ExtentRect(0, 0, 0, 0, -0.00234401234567823, -0.00419805555555203, 0.000391975308643543, 0.00176388888889594, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)))
+				$end 'PropDisplayMap'
+				$begin 'Animations'
+					'(((CTRL >= 1e-027)) && ((CTRL <= 1e+027)))'(0, 3)
+					'(((CTRL >= -1e+027)) && ((CTRL <= 0)))'(0, 2)
+					'(((CTRL >= 1e-027)) && ((CTRL <= 1e+027)))'(0, 3)
+					'(((CTRL >= -1e+027)) && ((CTRL <= 0)))'(0, 2)
+					'(((CTRL >= 1e-027)) && ((CTRL <= 1e+027)))'(0, 3)
+					'(((CTRL >= -1e+027)) && ((CTRL <= 0)))'(0, 2)
+					'(((CTRL >= 1e-027)) && ((CTRL <= 1e+027)))'(0, 3)
+					'(((CTRL >= -1e+027)) && ((CTRL <= 0)))'(0, 2)
+				$end 'Animations'
+			$end 'S'
+			$begin 'C'
+				ModTime=1208550628
+				Library='Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements'
+				ModSinceLib=false
+				LibLocation='SysLibrary'
+				HighestLevel=2
+				Normalize=true
+				InitialLevels(0, 1)
+				$begin 'PinDef'
+					Pin('C', -0.00254, 0, 0, 'I', 0.0001016, 0.0007112, false, 0, true, '', false, false, 'C', true)
+				$end 'PinDef'
+				$begin 'PinDef'
+					Pin('CH', -0.00254, -0.00254, 0, 'I', 0.0001016, 0.0007112, false, 0, true, '', false, false, 'CH', true)
+				$end 'PinDef'
+				$begin 'PinDef'
+					Pin('N1', 0.00254, 0.00254, 4.71239, 'N', 0.0001016, 0.0034544, false, 0, true, '', false, false, 'N1', true)
+				$end 'PinDef'
+				$begin 'PinDef'
+					Pin('N2', 0.00254, -0.00508, 1.5708, 'N', 0.0001016, 0.003556, false, 0, true, '', false, false, 'N2', true)
+				$end 'PinDef'
+				$begin 'Graphics'
+					$begin '-2'
+						Text(-0.0007112, -0.0021336, 0, 4, 4.8, false, 'Arial', 0, '#', false, false, ExtentRect(0, 0, 0, 0, -0.0007112, -0.00128693333332995, 0.000846666666670053, 0.00169333333334011, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+						Line(0.0003048, 1, 16777215, 0, -0.00254, 0.0048768, -0.0012192, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0, -0.00254, 0.0048768, -0.0012192, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.0048768, 0, 0.0048768, -0.0012192, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, -0.0018288, -0.00254, 0, -0.00254, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '-2'
+					$begin '-1'
+						Line(0.0002032, 1, 0, 0.001016, -0.001524, 0.004064, -0.001524, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.001016, -0.0009144, 0.004064, -0.0009144, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Circle(0.0002032, 1, 255, 0.00127, 0.0019812, 0.0003556, 255)
+					$end '-1'
+					$begin '1'
+						Line(0.0002032, 1, 0, 0.001016, -0.0009144, 0.004064, -0.0009144, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.001016, -0.001524, 0.004064, -0.001524, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Circle(0.0002032, 1, 255, 0.00127, 0.0019812, 0.0003556, 255)
+					$end '1'
+					$begin '2'
+						Text(-0.0007112, -0.0021336, 0, 4, 4.8, false, 'Arial', 0, '#', false, false, ExtentRect(0, 0, 0, 0, -0.0007112, -0.00168020999999979, 0.000777240000000366, 0.00168402000000079, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+						Line(0.0003048, 1, 16777215, 0, -0.00254, 0.0048768, -0.0012192, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0, -0.00254, 0.0048768, -0.0012192, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.0048768, 0, 0.0048768, -0.0012192, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, -0.0018288, -0.00254, 0, -0.00254, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '2'
+				$end 'Graphics'
+				$begin 'PropDisplayMap'
+					InstanceName(2, 1, 0, Text(-0.00254, -0.00508, 0, 1, 5, false, 'Arial', 0, '', false, false, ExtentRect(0, 0, 0, 0, -0.00234401234567823, -0.00419805555555203, 0.000391975308643543, 0.00176388888889594, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)))
+				$end 'PropDisplayMap'
+			$end 'C'
+			$begin 'L'
+				ModTime=1208550628
+				Library='Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements'
+				ModSinceLib=false
+				LibLocation='SysLibrary'
+				HighestLevel=2
+				Normalize=true
+				InitialLevels(0, 1)
+				$begin 'PinDef'
+					Pin('CH', -0.00254, -0.00254, 0, 'I', 0.0001016, 0.0007112, false, 0, true, '', false, false, 'CH', true)
+				$end 'PinDef'
+				$begin 'PinDef'
+					Pin('L', -0.00254, 0, 0, 'I', 0.0001016, 0.0007112, false, 0, true, '', false, false, 'L', true)
+				$end 'PinDef'
+				$begin 'PinDef'
+					Pin('N1', 0.00254, 0.00254, 4.71239, 'N', 0.0001016, 0.0014224, false, 0, true, '', false, false, 'N1', true)
+				$end 'PinDef'
+				$begin 'PinDef'
+					Pin('N2', 0.00254, -0.00508, 1.5708, 'N', 0.0001016, 0.0013208, false, 0, true, '', false, false, 'N2', true)
+				$end 'PinDef'
+				$begin 'Graphics'
+					$begin '-2'
+						Text(-0.0007112, -0.0021336, 0, 4, 4.8, false, 'Arial', 0, '#', false, false, ExtentRect(0, 0, 0, 0, -0.0007112, -0.00128693333332995, 0.000846666666670053, 0.00169333333334011, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+						Line(0.0003048, 1, 16777215, 0, -0.00254, 0.0048768, -0.0012192, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0, -0.00254, 0.0048768, -0.0012192, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.0048768, 0, 0.0048768, -0.0012192, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, -0.0018288, -0.00254, 0, -0.00254, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '-2'
+					$begin '-1'
+						Arc(0.0002032, 1, 0, 0.00263652, 0.0003048, 0.00091948, 4.60722, 1.67596, 0, 0, 0)
+						Arc(0.0002032, 1, 0, 0.00263652, -0.0013208, 0.00091948, 4.60722, 1.67596, 0, 0, 0)
+						Arc(0.0002032, 1, 0, 0.00263652, -0.0029464, 0.00091948, 4.60722, 1.67596, 0, 0, 0)
+						Circle(0.0002032, 1, 255, 0.00127, 0.0019812, 0.0003556, 255)
+					$end '-1'
+					$begin '1'
+						Arc(0.0002032, 1, 0, 0.00263652, 0.0003048, 0.00091948, 4.60722, 1.67596, 0, 0, 0)
+						Arc(0.0002032, 1, 0, 0.00263652, -0.0013208, 0.00091948, 4.60722, 1.67596, 0, 0, 0)
+						Arc(0.0002032, 1, 0, 0.00263652, -0.0029464, 0.00091948, 4.60722, 1.67596, 0, 0, 0)
+						Circle(0.0002032, 1, 255, 0.00127, 0.0019812, 0.0003556, 255)
+					$end '1'
+					$begin '2'
+						Text(-0.0007112, -0.0021336, 0, 4, 4.8, false, 'Arial', 0, '#', false, false, ExtentRect(0, 0, 0, 0, -0.0007112, -0.00168020999999979, 0.000777240000000366, 0.00168402000000079, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+						Line(0.0003048, 1, 16777215, 0, -0.00254, 0.0048768, -0.0012192, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0, -0.00254, 0.0048768, -0.0012192, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.0048768, 0, 0.0048768, -0.0012192, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, -0.0018288, -0.00254, 0, -0.00254, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '2'
+				$end 'Graphics'
+				$begin 'PropDisplayMap'
+					InstanceName(2, 1, 0, Text(-0.00254, -0.00508, 0, 1, 5, false, 'Arial', 0, '', false, false, ExtentRect(0, 0, 0, 0, -0.00234401234567823, -0.00419805555555203, 0.000391975308643543, 0.00176388888889594, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)))
+				$end 'PropDisplayMap'
+			$end 'L'
+			$begin 'R'
+				ModTime=1208550628
+				Library='Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements'
+				ModSinceLib=false
+				LibLocation='SysLibrary'
+				HighestLevel=3
+				Normalize=true
+				InitialLevels(0, 1)
+				$begin 'PinDef'
+					Pin('CH', -0.00254, -0.00254, 0, 'I', 0.0001016, 0.0007112, false, 0, true, '', false, false, 'CH', true)
+				$end 'PinDef'
+				$begin 'PinDef'
+					Pin('N1', 0.00254, 0.00254, 4.71239, 'N', 0.0001016, 0.0016256, false, 0, true, '', false, false, 'N1', true)
+				$end 'PinDef'
+				$begin 'PinDef'
+					Pin('N2', 0.00254, -0.00508, 1.5708, 'N', 0.0001016, 0.0013208, false, 0, true, '', false, false, 'N2', true)
+				$end 'PinDef'
+				$begin 'PinDef'
+					Pin('R', -0.00254, 0, 0, 'I', 0.0001016, 0.0007112, false, 0, true, '', false, false, 'R', true)
+				$end 'PinDef'
+				$begin 'Graphics'
+					$begin '-3'
+						Text(-0.0006096, 0.0004064, 0, 4, 4.8, false, 'Arial', 0, 'R', false, false, ExtentRect(0, 0, 0, 0, -0.0006096, 0.00125306666667005, 0.00103481481481895, 0.00169333333334011, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+						Line(0.0003048, 1, 16777215, 0.0048768, 0.0013208, 0, 0, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0, 0, 0.0048768, 0.0013208, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.0048768, 0.0019304, 0.0048768, 0.0007112, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, -0.0018288, 0, 0, 0, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '-3'
+					$begin '-2'
+						Text(-0.0007112, -0.0021336, 0, 4, 4.8, false, 'Arial', 0, '#', false, false, ExtentRect(0, 0, 0, 0, -0.0007112, -0.00128693333332995, 0.000846666666670053, 0.00169333333334011, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+						Line(0.0003048, 1, 16777215, 0, -0.00254, 0.0048768, -0.0012192, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0, -0.00254, 0.0048768, -0.0012192, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.0048768, 0, 0.0048768, -0.0012192, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, -0.0018288, -0.00254, 0, -0.00254, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '-2'
+					$begin '-1'
+						Line(0.0002032, 1, 0, 0.003556, 0.001016, 0.003556, -0.00381, 0.001524, -0.00381, 0.001524, 0.001016, 0.003556, 0.001016, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Circle(0.0002032, 1, 255, 0.00127, 0.0019812, 0.0003556, 255)
+					$end '-1'
+					$begin '1'
+						Circle(0.0002032, 1, 255, 0.00127, 0.0019812, 0.0003556, 255)
+						Line(0.0002032, 1, 0, 0.00254, -0.0037592, 0.003556, -0.0033528, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.003556, -0.0033528, 0.001524, -0.00254, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.001524, -0.00254, 0.003556, -0.0018288, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.003556, -0.0018288, 0.001524, -0.001016, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.001524, -0.001016, 0.003556, -0.0003048, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.003556, -0.0003048, 0.001524, 0.0004064, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.001524, 0.0004064, 0.00254, 0.0009144, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '1'
+					$begin '2'
+						Text(-0.0007112, -0.0021336, 0, 4, 4.8, false, 'Arial', 0, '#', false, false, ExtentRect(0, 0, 0, 0, -0.0007112, -0.00168020999999979, 0.000777240000000366, 0.00168402000000079, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+						Line(0.0003048, 1, 16777215, 0, -0.00254, 0.0048768, -0.0012192, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0, -0.00254, 0.0048768, -0.0012192, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.0048768, 0, 0.0048768, -0.0012192, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, -0.0018288, -0.00254, 0, -0.00254, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '2'
+					$begin '3'
+						Text(-0.0006096, 0.0004064, 0, 4, 4.8, false, 'Arial', 0, 'R', false, false, ExtentRect(0, 0, 0, 0, -0.0006096, 0.00125306666667005, 0.00103481481481895, 0.00169333333334011, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+						Line(0.0003048, 1, 16777215, 0.0048768, 0.0013208, 0, 0, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0, 0, 0.0048768, 0.0013208, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.0048768, 0.0019304, 0.0048768, 0.0007112, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, -0.0018288, 0, 0, 0, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '3'
+				$end 'Graphics'
+				$begin 'PropDisplayMap'
+					InstanceName(2, 1, 0, Text(-0.00254, -0.00508, 0, 1, 5, false, 'Arial', 0, '', false, false, ExtentRect(0, 0, 0, 0, -0.00234401234567823, -0.00419805555555203, 0.000391975308643543, 0.00176388888889594, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)))
+				$end 'PropDisplayMap'
+			$end 'R'
+			$begin 'D'
+				ModTime=1208550629
+				Library='Simplorer Elements\\Basic Elements\\Circuit\\Semiconductors System Level'
+				ModSinceLib=false
+				LibLocation='SysLibrary'
+				HighestLevel=2
+				Normalize=true
+				InitialLevels(0, 1)
+				$begin 'PinDef'
+					Pin('A', 0.00254, -0.00508, 1.5708, 'N', 0.0001016, 0.000508, false, 0, true, '', false, false, 'A', true)
+				$end 'PinDef'
+				$begin 'PinDef'
+					Pin('C', 0.00254, 0.00508, 4.71239, 'N', 0.0001016, 0.000508, false, 0, true, '', false, false, 'C', true)
+				$end 'PinDef'
+				$begin 'PinDef'
+					Pin('CH', -0.00254, 0.00508, 0, 'I', 0.0001016, 0.000508, false, 0, true, '', false, false, 'CH', true)
+				$end 'PinDef'
+				$begin 'Graphics'
+					$begin '-2'
+						Text(-0.0007112, 0.0004064, 0, 4, 4.8, false, 'Arial', 0, '#', false, false, ExtentRect(0, 0, 0, 0, -0.0007112, 0.00125306666667005, 0.000846666666670053, 0.00169333333334011, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+						Line(0.0003048, 1, 16777215, 0, 0, 0.0048768, 0.0013208, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0, 0, 0.0048768, 0.0013208, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.0048768, 0.00254, 0.0048768, 0.0013208, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, -0.0018288, 0, 0, 0, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '-2'
+					$begin '-1'
+						Line(0.0002032, 1, 0, 0.00254, 0.00254, 0, -0.00254, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.00508, -0.00254, 0.00254, 0.00254, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.00254, 0.004572, 0.00254, -0.004572, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0, -0.00254, 0.0049784, -0.00254, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0, 0.00254, 0.00508, 0.00254, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '-1'
+					$begin '1'
+						Line(0.0002032, 1, 0, 0.00254, 0.00254, 0, -0.00254, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.00508, -0.00254, 0.00254, 0.00254, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.00254, 0.004572, 0.00254, -0.004572, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0, -0.00254, 0.0049784, -0.00254, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0, 0.00254, 0.00508, 0.00254, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '1'
+					$begin '2'
+						Text(-0.0007112, 0.0004064, 0, 4, 4.8, false, 'Arial', 0, '#', false, false, ExtentRect(0, 0, 0, 0, -0.0007112, 0.000909320000000183, 0.000670560000000244, 0.00167640000000061, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+						Line(0.0003048, 1, 16777215, 0, 0, 0.0048768, 0.0013208, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0, 0, 0.0048768, 0.0013208, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.0048768, 0.00254, 0.0048768, 0.0013208, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, -0.0018288, 0, 0, 0, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '2'
+				$end 'Graphics'
+				$begin 'PropDisplayMap'
+					InstanceName(2, 1, 0, Text(-0.00254, -0.00508, 0, 1, 5, false, 'Arial', 0, '', false, false, ExtentRect(0, 0, 0, 0, -0.00234401234567823, -0.00419805555555203, 0.000391975308643543, 0.00176388888889594, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)))
+				$end 'PropDisplayMap'
+			$end 'D'
+			$begin 'E'
+				ModTime=1208550629
+				Library='Simplorer Elements\\Basic Elements\\Circuit\\Sources'
+				ModSinceLib=false
+				LibLocation='SysLibrary'
+				HighestLevel=7
+				Normalize=true
+				InitialLevels(0, 1)
+				$begin 'PinDef'
+					Pin('EMF', -0.00254, 0, 0, 'I', 0.0001016, 0.0007112, false, 0, true, '', false, false, 'EMF', true)
+				$end 'PinDef'
+				$begin 'PinDef'
+					Pin('N1', 0.00254, -0.00508, 1.5708, 'N', 0.0001016, 0.0027432, false, 0, true, '', false, false, 'N1', true)
+				$end 'PinDef'
+				$begin 'PinDef'
+					Pin('N2', 0.00254, 0.00508, 4.71239, 'N', 0.0001016, 0.0027432, false, 0, true, '', false, false, 'N2', true)
+				$end 'PinDef'
+				$begin 'Graphics'
+					$begin '-7'
+						Line(0.0002032, 1, 16711680, -0.0023368, -0.0027432, -0.0023368, -0.0032512, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0013208, -0.0037592, -0.0023368, -0.0027432, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0013208, -0.0027432, -0.0013208, -0.0037592, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0003048, -0.0037592, -0.0013208, -0.0027432, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0003048, -0.0032512, -0.0003048, -0.0037592, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '-7'
+					$begin '-6'
+						Line(0.0002032, 1, 16711680, -0.0023368, -0.0037592, -0.0023368, -0.0032512, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0013208, -0.0027432, -0.0023368, -0.0037592, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0013208, -0.0037592, -0.0013208, -0.0027432, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0003048, -0.0027432, -0.0013208, -0.0037592, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0003048, -0.0032512, -0.0003048, -0.0027432, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '-6'
+					$begin '-5'
+						Line(0.0002032, 1, 16711680, -0.0021336, -0.0027432, -0.0023368, -0.0032512, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.001524, -0.0027432, -0.0021336, -0.0027432, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0011176, -0.0037592, -0.001524, -0.0027432, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.000508, -0.0037592, -0.0011176, -0.0037592, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0003048, -0.0032512, -0.000508, -0.0037592, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '-5'
+					$begin '-4'
+						Line(0.0002032, 1, 16711680, -0.0018288, -0.0027432, -0.0023368, -0.0032512, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0008128, -0.0037592, -0.0018288, -0.0027432, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0003048, -0.0032512, -0.0008128, -0.0037592, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '-4'
+					$begin '-3'
+						Line(0.0002032, 1, 16711680, -0.0023368, -0.0027432, -0.0023368, -0.0032512, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0013208, -0.0027432, -0.0023368, -0.0027432, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0013208, -0.0037592, -0.0013208, -0.0027432, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0003048, -0.0037592, -0.0013208, -0.0037592, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0003048, -0.0032512, -0.0003048, -0.0037592, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '-3'
+					$begin '-2'
+						Line(0.0002032, 1, 16711680, -0.0013208, -0.0032512, -0.00132386, -0.00318748, -0.00133301, -0.00312446, -0.00134815, -0.00306282, -0.00136911, -0.00300325, -0.00139567, -0.0029464, -0.00142752, -0.00289289, -0.00146433, -0.0028433, -0.00150569, -0.00279818, -0.00155115, -0.00275802, -0.0016002, -0.00272327, -0.00165232, -0.0026943, -0.00170692, -0.00267144, -0.00176342, -0.00265492, -0.00182119, -0.00264494, -0.0018796, -0.0026416, -0.00193801, -0.00264494, -0.00199578, -0.00265492, -0.00205228, -0.00267144, -0.00210688, -0.0026943, -0.002159, -0.00272327, -0.00220805, -0.00275802, -0.00225351, -0.00279818, -0.00229487, -0.0028433, -0.00233168, -0.00289289, -0.00236353, -0.0029464, -0.00239009, -0.00300325, -0.00241105, -0.00306282, -0.00242619, -0.00312446, -0.00243534, -0.00318748, -0.0024384, -0.0032512, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0013208, -0.0032512, -0.00131774, -0.00331492, -0.00130859, -0.00337794, -0.00129345, -0.00343958, -0.00127249, -0.00349915, -0.00124593, -0.003556, -0.00121408, -0.00360951, -0.00117727, -0.0036591, -0.00113591, -0.00370422, -0.00109045, -0.00374438, -0.0010414, -0.00377913, -0.000989284, -0.0038081, -0.000934679, -0.00383096, -0.000878181, -0.00384748, -0.000820411, -0.00385746, -0.000762, -0.0038608, -0.000703589, -0.00385746, -0.000645819, -0.00384748, -0.000589321, -0.00383096, -0.000534716, -0.0038081, -0.0004826, -0.00377913, -0.000433546, -0.00374438, -0.00038809, -0.00370422, -0.000346731, -0.0036591, -0.000309921, -0.00360951, -0.000278065, -0.003556, -0.000251511, -0.00349915, -0.00023055, -0.00343958, -0.000215411, -0.00337794, -0.000206261, -0.00331492, -0.0002032, -0.0032512, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '-2'
+					$begin '-1'
+						Circle(0.0002032, 0, 255, 0.00254, -0.0001016, 0.0024384, 0)
+						Circle(0.0002032, 1, 255, 0.0039116, -0.0037084, 0.0003556, 255)
+						Line(0.0002032, 1, 0, 0.0029464, 0.0014224, 0.0021336, 0.0014224, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.00254, 0.001016, 0.00254, 0.0018288, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.0029464, -0.0018288, 0.0021336, -0.0018288, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '-1'
+					$begin '1'
+						Circle(0.0002032, 0, 255, 0.00254, -0.0001016, 0.0024384, 0)
+						Circle(0.0002032, 1, 255, 0.0039116, -0.0037084, 0.0003556, 255)
+						Line(0.0002032, 1, 0, 0.0029464, 0.0014224, 0.0021336, 0.0014224, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.00254, 0.001016, 0.00254, 0.0018288, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 0, 0.0029464, -0.0018288, 0.0021336, -0.0018288, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '1'
+					$begin '2'
+						Line(0.0002032, 1, 16711680, -0.0013208, -0.0032512, -0.00132386, -0.00318748, -0.00133301, -0.00312446, -0.00134815, -0.00306282, -0.00136911, -0.00300325, -0.00139567, -0.0029464, -0.00142752, -0.00289289, -0.00146433, -0.0028433, -0.00150569, -0.00279818, -0.00155115, -0.00275802, -0.0016002, -0.00272327, -0.00165232, -0.0026943, -0.00170692, -0.00267144, -0.00176342, -0.00265492, -0.00182119, -0.00264494, -0.0018796, -0.0026416, -0.00193801, -0.00264494, -0.00199578, -0.00265492, -0.00205228, -0.00267144, -0.00210688, -0.0026943, -0.002159, -0.00272327, -0.00220805, -0.00275802, -0.00225351, -0.00279818, -0.00229487, -0.0028433, -0.00233168, -0.00289289, -0.00236353, -0.0029464, -0.00239009, -0.00300325, -0.00241105, -0.00306282, -0.00242619, -0.00312446, -0.00243534, -0.00318748, -0.0024384, -0.0032512, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0013208, -0.0032512, -0.00131774, -0.00331492, -0.00130859, -0.00337794, -0.00129345, -0.00343958, -0.00127249, -0.00349915, -0.00124593, -0.003556, -0.00121408, -0.00360951, -0.00117727, -0.0036591, -0.00113591, -0.00370422, -0.00109045, -0.00374438, -0.0010414, -0.00377913, -0.000989284, -0.0038081, -0.000934679, -0.00383096, -0.000878181, -0.00384748, -0.000820411, -0.00385746, -0.000762, -0.0038608, -0.000703589, -0.00385746, -0.000645819, -0.00384748, -0.000589321, -0.00383096, -0.000534716, -0.0038081, -0.0004826, -0.00377913, -0.000433546, -0.00374438, -0.00038809, -0.00370422, -0.000346731, -0.0036591, -0.000309921, -0.00360951, -0.000278065, -0.003556, -0.000251511, -0.00349915, -0.00023055, -0.00343958, -0.000215411, -0.00337794, -0.000206261, -0.00331492, -0.0002032, -0.0032512, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '2'
+					$begin '3'
+						Line(0.0002032, 1, 16711680, -0.0023368, -0.0027432, -0.0023368, -0.0032512, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0013208, -0.0027432, -0.0023368, -0.0027432, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0013208, -0.0037592, -0.0013208, -0.0027432, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0003048, -0.0037592, -0.0013208, -0.0037592, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0003048, -0.0032512, -0.0003048, -0.0037592, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '3'
+					$begin '4'
+						Line(0.0002032, 1, 16711680, -0.0018288, -0.0027432, -0.0023368, -0.0032512, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0008128, -0.0037592, -0.0018288, -0.0027432, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0003048, -0.0032512, -0.0008128, -0.0037592, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '4'
+					$begin '5'
+						Line(0.0002032, 1, 16711680, -0.0021336, -0.0027432, -0.0023368, -0.0032512, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.001524, -0.0027432, -0.0021336, -0.0027432, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0011176, -0.0037592, -0.001524, -0.0027432, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.000508, -0.0037592, -0.0011176, -0.0037592, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0003048, -0.0032512, -0.000508, -0.0037592, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '5'
+					$begin '6'
+						Line(0.0002032, 1, 16711680, -0.0023368, -0.0037592, -0.0023368, -0.0032512, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0013208, -0.0027432, -0.0023368, -0.0037592, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0013208, -0.0037592, -0.0013208, -0.0027432, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0003048, -0.0027432, -0.0013208, -0.0037592, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0003048, -0.0032512, -0.0003048, -0.0027432, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '6'
+					$begin '7'
+						Line(0.0002032, 1, 16711680, -0.0023368, -0.0027432, -0.0023368, -0.0032512, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0013208, -0.0037592, -0.0023368, -0.0027432, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0013208, -0.0027432, -0.0013208, -0.0037592, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0003048, -0.0037592, -0.0013208, -0.0027432, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0003048, -0.0032512, -0.0003048, -0.0037592, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '7'
+				$end 'Graphics'
+				$begin 'PropDisplayMap'
+					InstanceName(2, 1, 0, Text(-0.00254, -0.00508, 0, 1, 5, false, 'Arial', 0, '', false, false, ExtentRect(0, 0, 0, 0, -0.00234401234567823, -0.00419805555555203, 0.000391975308643543, 0.00176388888889594, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)))
+				$end 'PropDisplayMap'
+			$end 'E'
+			$begin 'PULSE'
+				ModTime=1208550643
+				Library='Simplorer Elements\\Basic Elements\\Tools\\Time Functions'
+				ModSinceLib=false
+				LibLocation='SysLibrary'
+				HighestLevel=1
+				Normalize=true
+				InitialLevels(0, 1)
+				$begin 'PinDef'
+					Pin('VAL', 0.00508, 0, 3.14159, 'O', 0.0001016, 0.00254, false, 0, true, '', false, false, 'VAL', true)
+				$end 'PinDef'
+				$begin 'Graphics'
+					$begin '-1'
+						Polygon(0.0001016, 1, 8454143, 0.00254, 0.00254, -0.00508, 0.00254, -0.00508, -0.00254, 0.00254, -0.00254, 0.00254, 0.00254, BorderCol=0, End=0, Join=0)
+						Line(0.0002032, 1, 16711680, -0.0012192, 0, -0.0012192, -0.0014224, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0011176, -0.0014224, 0.0013208, -0.0014224, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, 0.0013208, -0.0013208, 0.0013208, 0, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0012192, 0.001524, -0.0037592, 0.001524, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0037592, 0.0001016, -0.0037592, 0.001524, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0012192, 0.0014224, -0.0012192, 0.0001016, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0001016, 1, 0, -0.004572, -0.0018288, -0.004572, 0.0021336, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0001016, 1, 0, -0.0047752, 0, 0.0023368, 0, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '-1'
+					$begin '1'
+						Polygon(0.0001016, 1, 8454143, 0.00254, 0.00254, -0.00508, 0.00254, -0.00508, -0.00254, 0.00254, -0.00254, 0.00254, 0.00254, BorderCol=0, End=0, Join=0)
+						Line(0.0002032, 1, 16711680, -0.0012192, 0, -0.0012192, -0.0014224, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0011176, -0.0014224, 0.0013208, -0.0014224, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, 0.0013208, -0.0013208, 0.0013208, 0, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0012192, 0.001524, -0.0037592, 0.001524, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0037592, 0.0001016, -0.0037592, 0.001524, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0002032, 1, 16711680, -0.0012192, 0.0014224, -0.0012192, 0.0001016, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0001016, 1, 0, -0.004572, -0.0018288, -0.004572, 0.0021336, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+						Line(0.0001016, 1, 0, -0.0047752, 0, 0.0023368, 0, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					$end '1'
+				$end 'Graphics'
+				$begin 'PropDisplayMap'
+					InstanceName(2, 1, 0, Text(-0.00508, -0.00254, 0, 1, 5, false, 'Arial', 0, '', false, false, ExtentRect(0, 0, 0, 0, -0.00488401234567823, -0.00165805555555203, 0.000391975308643543, 0.00176388888889594, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)))
+				$end 'PropDisplayMap'
+			$end 'PULSE'
+			$begin 'ground_earth'
+				ModTime=1016213689
+				Library='Symbols'
+				ModSinceLib=false
+				LibLocation='SysLibrary'
+				HighestLevel=1
+				Normalize=true
+				InitialLevels(0, 1)
+				$begin 'PinDef'
+					Pin('n1', 0, 0.00254, 4.71239, 'N', 0, 0, false, 0, true, '', false, false, 'n1', true)
+				$end 'PinDef'
+				$begin 'Graphics'
+					Line(0, 1, 12566272, -4.33681e-019, 0.00254, -4.33681e-019, 4.33681e-019, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					Line(0, 1, 12566272, 0.0017145, -4.33681e-019, -0.0017145, -4.33681e-019, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					Line(0, 1, 12566272, -0.001143, -0.000762, 0.001143, -0.000762, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+					Line(0, 1, 12566272, -0.0005715, -0.001524, 0.0005715, -0.001524, End=0, Join=0, LineStyle=0, BeginObj=0, EndObj=0)
+				$end 'Graphics'
+			$end 'ground_earth'
+		$end 'Symbols'
+		$begin 'DefInfo'
+			PULSE(0, 0, '', 1244252497, '', 'Simplorer Elements\\Basic Elements\\Tools\\Time Functions:PULSE', '', '', 'Pulse Wave', 'PULSE.htm', 'Basic Elements.chm', 'GreenDot.bmp', 'Simplorer Elements\\Basic Elements\\Tools\\Time Functions', 'SysLibrary', 'ANSOFT', 'ANSOFT', 1001618884, '$EXAMPLEDIR\\Components\\Basic\\Tools\\Time_functions\\time_function.asmp')
+			R(0, 2, '', 1242855559, '', 'Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements:R', '', '', 'Resistor', 'R.htm', 'Basic Elements.chm', 'GreenDot.bmp', 'Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements', 'SysLibrary', 'ANSOFT', 'ANSOFT', 1034786065, '$EXAMPLEDIR\\Components\\Basic\\Circuit\\Passive_elements\\Resistor\\resistor.asmp')
+			C(0, 2, '', 1242855511, '', 'Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements:C', '', '', 'Capacitor', 'C.htm', 'Basic Elements.chm', 'GreenDot.bmp', 'Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements', 'SysLibrary', 'ANSOFT', 'ANSOFT', 1031667652, '$EXAMPLEDIR\\Components\\Basic\\Circuit\\Passive_elements\\Capacitor\\capacitor.asmp')
+			L(0, 2, '', 1242855543, '', 'Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements:L', '', '', 'Inductor', 'L.htm', 'Basic Elements.chm', 'GreenDot.bmp', 'Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements', 'SysLibrary', 'ANSOFT', 'ANSOFT', 1034273510, '$EXAMPLEDIR\\Components\\Basic\\Circuit\\Passive_elements\\Inductor\\inductor.asmp')
+			E(0, 2, '', 1244252344, '', 'Simplorer Elements\\Basic Elements\\Circuit\\Sources:E', '', '', 'Voltage Source', 'E.htm', 'Basic Elements.chm', 'GreenDot.bmp', 'Simplorer Elements\\Basic Elements\\Circuit\\Sources', 'SysLibrary', 'ANSOFT', 'ANSOFT', 1043680337, '$EXAMPLEDIR\\Components\\Basic\\Circuit\\Sources\\Voltage_source\\voltage_source.asmp')
+			S(0, 2, '', 1276108204, '', 'Simplorer Elements\\Basic Elements\\Circuit\\Ideal Switches:S', '', '', 'Ideal Switch', 'S.htm', 'Basic Elements.chm', 'GreenDot.bmp', 'Simplorer Elements\\Basic Elements\\Circuit\\Ideal Switches', 'SysLibrary', 'ANSOFT', 'ANSOFT', 1028302966, '$EXAMPLEDIR\\Components\\Basic\\Circuit\\Ideal_switches\\ideal_switch.asmp')
+			D(0, 2, '', 1242949071, '', 'Simplorer Elements\\Basic Elements\\Circuit\\Semiconductors System Level:D', '', '', 'Diode', 'D.htm', 'Basic Elements.chm', 'GreenDot.bmp', 'Simplorer Elements\\Basic Elements\\Circuit\\Semiconductors System Level', 'SysLibrary', 'ANSOFT', 'ANSOFT', 1011364125, '$EXAMPLEDIR\\Components\\Basic\\Circuit\\Semiconductors_system_level\\Diode\\diode.asmp')
+			cuk(0, 0, '', 1219243100, '', 'cuk', '', '', '', '', '', '', '', 'Project', '', '', 1219243100, '')
+		$end 'DefInfo'
+		$begin 'Compdefs'
+			$begin 'PULSE'
+				Library='Simplorer Elements\\Basic Elements\\Tools\\Time Functions'
+				Refbase='PULSE'
+				NumParts=1
+				ModSinceLib=false
+				$begin 'SimModelDefs'
+					PULSE(1, 'INTERN PULSE ?InstanceName(@InstanceName):(@(Refbase)@(ID)) (FREQ:=@(FREQ), TPERIO:=@(TPERIO), AMPL:=@(AMPL), PHASE:=@(PHASE), PERIO:=@(PERIO), OFF:=@(OFF), TDELAY:=@(TDELAY) ) ;', '')
+				$end 'SimModelDefs'
+				$begin 'Properties'
+					TextProp('Title_English (United States)', 'RHD', '', 'Pulse Wave')
+					TextProp('Title_English (United Kingdom)', 'RHD', '', 'Pulse Wave')
+					TextProp('Title_German (Germany)', 'RHD', '', 'Rechteck-Funktion')
+					TextProp('FREQ_English (United Kingdom)', 'RHD', '', 'Frequency')
+					TextProp('FREQ_German (Germany)', 'RHD', '', 'Frequenz')
+					TextProp('TPERIO_English (United Kingdom)', 'RHD', '', 'Period')
+					TextProp('TPERIO_German (Germany)', 'RHD', '', 'Periode')
+					TextProp('AMPL_English (United Kingdom)', 'RHD', '', 'Amplitude')
+					TextProp('AMPL_German (Germany)', 'RHD', '', 'Amplitude')
+					TextProp('PHASE_English (United Kingdom)', 'RHD', '', 'Phase')
+					TextProp('PHASE_German (Germany)', 'RHD', '', 'Phasenlage')
+					TextProp('PERIO_English (United Kingdom)', 'RHD', '', 'Periodic')
+					TextProp('PERIO_German (Germany)', 'RHD', '', 'Periodisch')
+					TextProp('OFF_English (United Kingdom)', 'RHD', '', 'Offset')
+					TextProp('OFF_German (Germany)', 'RHD', '', 'Offset')
+					TextProp('TDELAY_English (United Kingdom)', 'RHD', '', 'Initial Delay')
+					TextProp('TDELAY_German (Germany)', 'RHD', '', 'Anfangsverzögerung')
+					TextProp('VAL_English (United Kingdom)', 'RHD', '', 'Value')
+					TextProp('VAL_German (Germany)', 'RHD', '', 'Wert')
+					TextProp('dVAL_English (United Kingdom)', 'RHD', '', 'Derivative of Value')
+					TextProp('dVAL_German (Germany)', 'RHD', '', 'Ableitung des Wertes')
+				$end 'Properties'
+				CompExtID=2
+				$begin 'Parameters'
+					TextProp('InstanceName', 'D', '', '')
+					ButtonProp('SimplorerNetlist', 'HD', '', 'INTERN PULSE ?InstanceName(@InstanceName):(@(Refbase)@(ID)) (FREQ:=@(FREQ), TPERIO:=@(TPERIO), AMPL:=@(AMPL), PHASE:=@(PHASE), PERIO:=@(PERIO), OFF:=@(OFF), TDELAY:=@(TDELAY) ) ;', 'INTERN PULSE ?InstanceName(@InstanceName):(@(Refbase)@(ID)) (FREQ:=@(FREQ), TPERIO:=@(TPERIO), AMPL:=@(AMPL), PHASE:=@(PHASE), PERIO:=@(PERIO), OFF:=@(OFF), TDELAY:=@(TDELAY) ) ;', 1, ButtonPropClientData())
+					ButtonProp('CompDlg', 'D', 'Options', 'TFPULSE', 'TFPULSE', 635, ButtonPropClientData())
+					CheckboxProp('SetPeriod', 'RHD', '', false)
+					MenuProp('SimulatorModel', 'D', '', 'PULSE', 0)
+				$end 'Parameters'
+				$begin 'Quantities'
+					QuantityProp('FREQ', 'D', 'Frequency', '50Hz', 'Hz', Attrs(Info('FREQ', 0, 'Hz', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '50Hz', false, false))
+					QuantityProp('TPERIO', 'D', 'Period', '0.02s', 's', Attrs(Info('TPERIO', 0, 's', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '0.02s', false, false))
+					QuantityProp('AMPL', 'D', 'Amplitude', '326', '', Attrs(Info('AMPL', 0, '', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '326', false, false))
+					QuantityProp('PHASE', 'D', 'Phase', '0deg', 'deg', Attrs(Info('PHASE', 0, 'deg', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '0deg', false, false))
+					QuantityProp('PERIO', 'D', 'Periodic', '1', '', Attrs(Info('PERIO', 0, '', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '1', false, false))
+					QuantityProp('OFF', 'D', 'Offset', '0', '', Attrs(Info('OFF', 0, '', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '0', false, false))
+					QuantityProp('TDELAY', 'D', 'Initial Delay', '0s', 's', Attrs(Info('TDELAY', 0, 's', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '0s', false, false))
+					QuantityProp('VAL', 'D', 'Value', '0', '', Attrs(Info('VAL', 0, '', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', true, true, true, '0', false, false))
+					QuantityProp('dVAL', 'D', 'Derivative of Value', '0', '', Attrs(Info('dVAL', 0, '', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0', false, false))
+				$end 'Quantities'
+			$end 'PULSE'
+			$begin 'R'
+				Library='Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements'
+				Refbase='R'
+				NumParts=1
+				ModSinceLib=false
+				Terminal('N1', 'N1', 'A', false, 0, 0, 'Node1', 'Electrical', '')
+				Terminal('N2', 'N2', 'A', false, 1, 0, 'Node2', 'Electrical', '')
+				$begin 'SimModelDefs'
+					R(1, 'INTERN @Type ?InstanceName(@InstanceName):(@(Refbase)@(ID)) N1:= %0 , N2:= %1 (?(Type==R)(R:=@R):(?(NLType==CH)(CH:=@CH):(CH:=XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH.VAL)));~(Type==R)(?(NLType==CH_DATA)(\
+INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @CH_DATA );)?(NLType==CH_STRG)(\
+INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @CH_STRG );)?(NLType==CH_FILE)(\
+INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @(CH_FILE) );))', '')
+				$end 'SimModelDefs'
+				$begin 'Properties'
+					TextProp('Title_English (United States)', 'RHD', '', 'Resistor')
+					TextProp('Title_English (United Kingdom)', 'RHD', '', 'Resistor')
+					TextProp('Title_German (Germany)', 'RHD', '', 'Widerstand')
+					TextProp('N1_English (United Kingdom)', 'RHD', '', 'Node1')
+					TextProp('N1_German (Germany)', 'RHD', '', 'Knoten 1')
+					TextProp('N2_English (United Kingdom)', 'RHD', '', 'Node2')
+					TextProp('N2_German (Germany)', 'RHD', '', 'Knoten 1')
+					TextProp('R_English (United Kingdom)', 'RHD', '', 'Resistance')
+					TextProp('R_German (Germany)', 'RHD', '', 'Widerstand')
+					TextProp('CH_English (United Kingdom)', 'RHD', '', 'Characteristic')
+					TextProp('CH_German (Germany)', 'RHD', '', 'Kennlinie')
+					TextProp('CH_FILE_English (United Kingdom)', 'RHD', '', 'Characteristic File Name')
+					TextProp('CH_FILE_German (Germany)', 'RHD', '', 'Kennlinie Dateiname')
+					TextProp('CH_STRG_English (United Kingdom)', 'RHD', '', 'Characteristic File Reference')
+					TextProp('CH_STRG_German (Germany)', 'RHD', '', 'Kennlinie Dateireferenz')
+					TextProp('V_English (United Kingdom)', 'RHD', '', 'Voltage')
+					TextProp('V_German (Germany)', 'RHD', '', 'Spannung')
+					TextProp('I_English (United Kingdom)', 'RHD', '', 'Current')
+					TextProp('I_German (Germany)', 'RHD', '', 'Strom')
+					TextProp('dV_English (United Kingdom)', 'RHD', '', 'Derivative of Voltage')
+					TextProp('dV_German (Germany)', 'RHD', '', 'Ableitung der Spannung')
+					TextProp('dI_English (United Kingdom)', 'RHD', '', 'Derivative of Current')
+					TextProp('dI_German (Germany)', 'RHD', '', 'Ableitung des Stromes')
+				$end 'Properties'
+				CompExtID=2
+				$begin 'Parameters'
+					ButtonProp('CH_FILE', 'D', 'Characteristic File Name', '', '<Project>', 3, ButtonPropClientData(InternalFormatText='<Project>'))
+					TextProp('CH_STRG', 'D', 'Characteristic File Reference', '')
+					TextProp('InstanceName', 'D', '', '')
+					ButtonProp('SimplorerNetlist', 'HD', '', 'INTERN @Type ?InstanceName(@InstanceName):(@(Refbase)@(ID)) N1:= %0 , N2:= %1 (?(Type==R)(R:=@R):(?(NLType==CH)(CH:=@CH):(CH:=XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH.VAL)));~(Type==R)(?(NLType==CH_DATA)(\
+INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @CH_DATA );)?(NLType==CH_STRG)(\
+INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @CH_STRG );)?(NLType==CH_FILE)(\
+INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @(CH_FILE) );))', 'INTERN @Type ?InstanceName(@InstanceName):(@(Refbase)@(ID)) N1:= %0 , N2:= %1 (?(Type==R)(R:=@R):(?(NLType==CH)(CH:=@CH):(CH:=XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH.VAL)));~(Type==R)(?(NLType==CH_DATA)(\
+INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @CH_DATA );)?(NLType==CH_STRG)(\
+INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @CH_STRG );)?(NLType==CH_FILE)(\
+INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @(CH_FILE) );))', 1, ButtonPropClientData())
+					MenuProp('NLTYPE', 'D', '', 'CH,CH_DATA,CH_STRG,CH_FILE', 0)
+					MenuProp('Type', 'D', '', 'R,RNL', 0)
+					TextProp('CH_DATA', 'D', '', '0')
+					ButtonProp('CompDlg', 'D', 'Options', 'R', 'R', 525, ButtonPropClientData())
+					MenuProp('SimulatorModel', 'D', '', 'R', 0)
+				$end 'Parameters'
+				$begin 'Quantities'
+					QuantityProp('R', 'D', 'Resistance', '1000ohm', 'ohm', Attrs(Info('R', 0, 'ohm', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', true, false, false, '1000ohm', false, false))
+					QuantityProp('CH', 'D', 'Characteristic', CB='CHvalidation', '_Empty', '', Attrs(Info('CH', 0, '', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', true, false, false, '_Empty', false, false))
+					QuantityProp('V', 'D', 'Voltage', '0V', 'V', Attrs(Info('V', 0, 'V', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, true, '0V', false, false))
+					QuantityProp('I', 'D', 'Current', '0A', 'A', Attrs(Info('I', 0, 'A', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, true, '0A', false, false))
+					QuantityProp('dV', 'D', 'Derivative of Voltage', '0V_per_s', 'V_per_s', Attrs(Info('dV', 0, 'V_per_s', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0V_per_s', false, false))
+					QuantityProp('dI', 'D', 'Derivative of Current', '0A_per_s', 'A_per_s', Attrs(Info('dI', 0, 'A_per_s', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0A_per_s', false, false))
+				$end 'Quantities'
+			$end 'R'
+			$begin 'C'
+				Library='Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements'
+				Refbase='C'
+				NumParts=1
+				ModSinceLib=false
+				Terminal('N1', 'N1', 'A', false, 4, 0, 'Node1', 'Electrical', '')
+				Terminal('N2', 'N2', 'A', false, 5, 0, 'Node2', 'Electrical', '')
+				$begin 'SimModelDefs'
+					C(1, 'INTERN @Type ?InstanceName(@InstanceName):(@(Refbase)@(ID)) N1:= %0 , N2:= %1 (?(Type==C)(C:=@C):(?(NLType==CH)(CH:=@CH):(CH:=XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH.VAL))?(UseInitialConditions==true)(, V0:=@V0));~(Type==C)(?(NLType==CH_DATA)(\
+INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @CH_DATA );)?(NLType==CH_STRG)(\
+INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @CH_STRG );)?(NLType==CH_FILE)(\
+INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @(CH_FILE) );))', '')
+				$end 'SimModelDefs'
+				$begin 'Properties'
+					TextProp('Title_English (United States)', 'RHD', '', 'Capacitor')
+					TextProp('Title_English (United Kingdom)', 'RHD', '', 'Capacitor')
+					TextProp('Title_German (Germany)', 'RHD', '', 'Kapazität')
+					TextProp('N1_English (United Kingdom)', 'RHD', '', 'Node1')
+					TextProp('N1_German (Germany)', 'RHD', '', 'Knoten 1')
+					TextProp('N2_English (United Kingdom)', 'RHD', '', 'Node2')
+					TextProp('N2_German (Germany)', 'RHD', '', 'Knoten 1')
+					TextProp('C_English (United Kingdom)', 'RHD', '', 'Capacitance')
+					TextProp('C_German (Germany)', 'RHD', '', 'Kapazität')
+					TextProp('V0_English (United Kingdom)', 'RHD', '', 'Initial Voltage')
+					TextProp('V0_German (Germany)', 'RHD', '', 'Anfangswert der Spannung')
+					TextProp('CH_English (United Kingdom)', 'RHD', '', 'Characteristic')
+					TextProp('CH_German (Germany)', 'RHD', '', 'Kennlinie')
+					TextProp('CH_FILE_English (United Kingdom)', 'RHD', '', 'Characteristic File Name')
+					TextProp('CH_FILE_German (Germany)', 'RHD', '', 'Kennlinie Dateinamen')
+					TextProp('CH_STRG_English (United Kingdom)', 'RHD', '', 'Characteristic File Reference')
+					TextProp('CH_STRG_German (Germany)', 'RHD', '', 'Kennlinie Dateireferenz')
+					TextProp('V_English (United Kingdom)', 'RHD', '', 'Voltage')
+					TextProp('V_German (Germany)', 'RHD', '', 'Spannung')
+					TextProp('I_English (United Kingdom)', 'RHD', '', 'Current')
+					TextProp('I_German (Germany)', 'RHD', '', 'Strom')
+					TextProp('Q_English (United Kingdom)', 'RHD', '', 'Charge')
+					TextProp('Q_German (Germany)', 'RHD', '', 'Ladung')
+					TextProp('dV_English (United Kingdom)', 'RHD', '', 'Derivative of Voltage')
+					TextProp('dV_German (Germany)', 'RHD', '', 'Ableitung der Spannung')
+					TextProp('dI_English (United Kingdom)', 'RHD', '', 'Derivative of Current')
+					TextProp('dI_German (Germany)', 'RHD', '', 'Ableitung des Stromes')
+					TextProp('dQ_English (United Kingdom)', 'RHD', '', 'Derivative of Charge')
+					TextProp('dQ_German (Germany)', 'RHD', '', 'Ableitung der Ladung')
+				$end 'Properties'
+				CompExtID=2
+				$begin 'Parameters'
+					ButtonProp('CH_FILE', 'D', 'Characteristic File Name', '', '<Project>', 3, ButtonPropClientData(InternalFormatText='<Project>'))
+					TextProp('CH_STRG', 'D', 'Characteristic File Reference', '')
+					TextProp('InstanceName', 'D', '', '')
+					ButtonProp('SimplorerNetlist', 'HD', '', 'INTERN @Type ?InstanceName(@InstanceName):(@(Refbase)@(ID)) N1:= %0 , N2:= %1 (?(Type==C)(C:=@C):(?(NLType==CH)(CH:=@CH):(CH:=XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH.VAL))?(UseInitialConditions==true)(, V0:=@V0));~(Type==C)(?(NLType==CH_DATA)(\
+INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @CH_DATA );)?(NLType==CH_STRG)(\
+INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @CH_STRG );)?(NLType==CH_FILE)(\
+INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @(CH_FILE) );))', 'INTERN @Type ?InstanceName(@InstanceName):(@(Refbase)@(ID)) N1:= %0 , N2:= %1 (?(Type==C)(C:=@C):(?(NLType==CH)(CH:=@CH):(CH:=XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH.VAL))?(UseInitialConditions==true)(, V0:=@V0));~(Type==C)(?(NLType==CH_DATA)(\
+INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @CH_DATA );)?(NLType==CH_STRG)(\
+INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @CH_STRG );)?(NLType==CH_FILE)(\
+INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @(CH_FILE) );))', 1, ButtonPropClientData())
+					MenuProp('NLTYPE', 'D', '', 'CH,CH_DATA,CH_STRG,CH_FILE', 0)
+					MenuProp('Type', 'D', '', 'C,CNL,CVNL', 0)
+					VariableProp('V0', 'D', '', '0V')
+					TextProp('CH_DATA', 'D', '', '0')
+					CheckboxProp('UseInitialConditions', 'D', '', false)
+					ButtonProp('CompDlg', 'D', 'Options', 'C', 'C', 526, ButtonPropClientData())
+					MenuProp('SimulatorModel', 'D', '', 'C', 0)
+				$end 'Parameters'
+				$begin 'Quantities'
+					QuantityProp('C', 'D', 'Capacitance', '1e-006farad', 'farad', Attrs(Info('C', 0, 'farad', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', true, false, false, '1e-006farad', false, false))
+					QuantityProp('CH', 'D', 'Characteristic', CB='CHvalidation', '_Empty', '', Attrs(Info('CH', 0, '', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', true, false, false, '_Empty', false, false))
+					QuantityProp('V', 'D', 'Voltage', '0V', 'V', Attrs(Info('V', 0, 'V', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, true, '0V', false, false))
+					QuantityProp('I', 'D', 'Current', '0A', 'A', Attrs(Info('I', 0, 'A', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, true, '0A', false, false))
+					QuantityProp('Q', 'D', 'Charge', '0Coulomb', 'Coulomb', Attrs(Info('Q', 0, 'Coulomb', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0Coulomb', false, false))
+					QuantityProp('dV', 'D', 'Derivative of Voltage', '0V_per_s', 'V_per_s', Attrs(Info('dV', 0, 'V_per_s', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0V_per_s', false, false))
+					QuantityProp('dI', 'D', 'Derivative of Current', '0A_per_s', 'A_per_s', Attrs(Info('dI', 0, 'A_per_s', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0A_per_s', false, false))
+					QuantityProp('dQ', 'D', 'Derivative of Charge', '0A', 'A', Attrs(Info('dQ', 0, 'A', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0A', false, false))
+				$end 'Quantities'
+			$end 'C'
+			$begin 'L'
+				Library='Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements'
+				Refbase='L'
+				NumParts=1
+				ModSinceLib=false
+				Terminal('N1', 'N1', 'A', false, 6, 0, 'Node1', 'Electrical', '')
+				Terminal('N2', 'N2', 'A', false, 7, 0, 'Node2', 'Electrical', '')
+				$begin 'SimModelDefs'
+					L(1, 'INTERN @Type ?InstanceName(@InstanceName):(@(Refbase)@(ID)) N1:= %0 , N2:= %1 (?(Type==L)(L:=@L):(?(NLType==CH)(CH:=@CH):(CH:=XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH.VAL))?(UseInitialConditions==true)(, I0:=@I0));~(Type==C)(?(NLType==CH_DATA)(\
+ INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @CH_DATA );)?(NLType==CH_STRG)(\
+ INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @CH_STRG );)?(NLType==CH_FILE)(\
+ INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @(CH_FILE) );))', '')
+				$end 'SimModelDefs'
+				$begin 'Properties'
+					TextProp('Title_English (United States)', 'RHD', '', 'Inductor')
+					TextProp('Title_English (United Kingdom)', 'RHD', '', 'Inductor')
+					TextProp('Title_German (Germany)', 'RHD', '', 'Induktivität')
+					TextProp('N1_English (United Kingdom)', 'RHD', '', 'Node1')
+					TextProp('N1_German (Germany)', 'RHD', '', 'Knoten 1')
+					TextProp('N2_English (United Kingdom)', 'RHD', '', 'Node2')
+					TextProp('N2_German (Germany)', 'RHD', '', 'Knoten 1')
+					TextProp('L_English (United Kingdom)', 'RHD', '', 'Inductance')
+					TextProp('L_German (Germany)', 'RHD', '', 'Induktivität')
+					TextProp('I0_English (United Kingdom)', 'RHD', '', 'Initial Current')
+					TextProp('I0_German (Germany)', 'RHD', '', 'Anfangswert des Stromes')
+					TextProp('CH_English (United Kingdom)', 'RHD', '', 'Characteristic')
+					TextProp('CH_German (Germany)', 'RHD', '', 'Kennlinie')
+					TextProp('CH_FILE_English (United Kingdom)', 'RHD', '', 'Characteristic File Name')
+					TextProp('CH_FILE_German (Germany)', 'RHD', '', 'Kennlinie Dateinamen')
+					TextProp('CH_STRG_English (United Kingdom)', 'RHD', '', 'Characteristic File Reference')
+					TextProp('CH_STRG_German (Germany)', 'RHD', '', 'Kennlinie Dateireferenz')
+					TextProp('V_English (United Kingdom)', 'RHD', '', 'Voltage')
+					TextProp('V_German (Germany)', 'RHD', '', 'Spannung')
+					TextProp('I_English (United Kingdom)', 'RHD', '', 'Current')
+					TextProp('I_German (Germany)', 'RHD', '', 'Strom')
+					TextProp('PSI_English (United Kingdom)', 'RHD', '', 'Flux Linkage')
+					TextProp('PSI_German (Germany)', 'RHD', '', 'Flussverkettung')
+					TextProp('dV_English (United Kingdom)', 'RHD', '', 'Derivative of Voltage')
+					TextProp('dV_German (Germany)', 'RHD', '', 'Ableitung der Spannung')
+					TextProp('dI_English (United Kingdom)', 'RHD', '', 'Derivative of Current')
+					TextProp('dI_German (Germany)', 'RHD', '', 'Ableitung des Stromes')
+					TextProp('dPSI_English (United Kingdom)', 'RHD', '', 'Derivative of Flux Linkage')
+					TextProp('dPSI_German (Germany)', 'RHD', '', 'Ableitung der Flussverkettung')
+				$end 'Properties'
+				CompExtID=2
+				$begin 'Parameters'
+					ButtonProp('CH_FILE', 'D', 'Characteristic File Name', '', '<Project>', 3, ButtonPropClientData(InternalFormatText='<Project>'))
+					TextProp('CH_STRG', 'D', 'Characteristic File Reference', '')
+					TextProp('InstanceName', 'D', '', '')
+					ButtonProp('SimplorerNetlist', 'HD', '', 'INTERN @Type ?InstanceName(@InstanceName):(@(Refbase)@(ID)) N1:= %0 , N2:= %1 (?(Type==L)(L:=@L):(?(NLType==CH)(CH:=@CH):(CH:=XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH.VAL))?(UseInitialConditions==true)(, I0:=@I0));~(Type==C)(?(NLType==CH_DATA)(\
+ INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @CH_DATA );)?(NLType==CH_STRG)(\
+ INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @CH_STRG );)?(NLType==CH_FILE)(\
+ INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @(CH_FILE) );))', 'INTERN @Type ?InstanceName(@InstanceName):(@(Refbase)@(ID)) N1:= %0 , N2:= %1 (?(Type==L)(L:=@L):(?(NLType==CH)(CH:=@CH):(CH:=XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH.VAL))?(UseInitialConditions==true)(, I0:=@I0));~(Type==C)(?(NLType==CH_DATA)(\
+ INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @CH_DATA );)?(NLType==CH_STRG)(\
+ INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @CH_STRG );)?(NLType==CH_FILE)(\
+ INTERN XY XY_?InstanceName(@InstanceName):(@(Refbase)@(ID))_CH ( FILE := @(CH_FILE) );))', 1, ButtonPropClientData())
+					MenuProp('NLTYPE', 'D', '', 'CH,CH_DATA,CH_STRG,CH_FILE', 0)
+					MenuProp('Type', 'D', '', 'L,LINL,LNL', 0)
+					VariableProp('I0', 'D', '', '0A')
+					TextProp('CH_DATA', 'D', '', '0')
+					CheckboxProp('UseInitialConditions', 'D', '', false)
+					ButtonProp('CompDlg', 'D', 'Options', 'L', 'L', 527, ButtonPropClientData())
+					MenuProp('SimulatorModel', 'D', '', 'L', 0)
+				$end 'Parameters'
+				$begin 'Quantities'
+					QuantityProp('L', 'D', 'Inductance', '0.001H', 'H', Attrs(Info('L', 0, 'H', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', true, false, false, '0.001H', false, false))
+					QuantityProp('CH', 'D', 'Characteristic', CB='CHvalidation', '_Empty', '', Attrs(Info('CH', 0, '', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', true, false, false, '_Empty', false, false))
+					QuantityProp('V', 'D', 'Voltage', '0V', 'V', Attrs(Info('V', 0, 'V', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, true, '0V', false, false))
+					QuantityProp('I', 'D', 'Current', '0A', 'A', Attrs(Info('I', 0, 'A', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, true, '0A', false, false))
+					QuantityProp('PSI', 'D', 'Flux Linkage', '0vs', 'vs', Attrs(Info('PSI', 0, 'vs', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0vs', false, false))
+					QuantityProp('dV', 'D', 'Derivative of Voltage', '0V_per_s', 'V_per_s', Attrs(Info('dV', 0, 'V_per_s', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0V_per_s', false, false))
+					QuantityProp('dI', 'D', 'Derivative of Current', '0A_per_s', 'A_per_s', Attrs(Info('dI', 0, 'A_per_s', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0A_per_s', false, false))
+					QuantityProp('dPSI', 'D', 'Derivative of Flux Linkage', '0V', 'V', Attrs(Info('dPSI', 0, 'V', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0V', false, false))
+				$end 'Quantities'
+			$end 'L'
+			$begin 'E'
+				Library='Simplorer Elements\\Basic Elements\\Circuit\\Sources'
+				Refbase='E'
+				NumParts=1
+				ModSinceLib=false
+				Terminal('N1', 'N1', 'A', false, 8, 0, 'Node1', 'Electrical', '')
+				Terminal('N2', 'N2', 'A', false, 9, 0, 'Node2', 'Electrical', '')
+				$begin 'SimModelDefs'
+					E(1, 'INTERN @Type ?InstanceName(@InstanceName):(@(Refbase)@(ID)) N1:= %0 , N2:= %1 (?(Type==E)(EMF:= @(EMF), PARTDERIV:= @(PARTDERIV),):(?(Type==ETRAPEZ)(TRISE:= @(TRISE), TFALL:= @(TFALL), PWIDTH:= @(PWIDTH),):(FREQ:= @(FREQ),) TPERIO:=@(TPERIO), AMPL:=@(AMPL), PHASE:=@(PHASE), PERIO:=@(PERIO), OFF:=@(OFF), TDELAY:=@(TDELAY),) SPC:=@(SPC), AC_PHASE := ?(ACType==VALUE)(0):(?(ACType==MAG_PHASE)(@AC_PHASE):(ATAN((@AC_IM)/(@AC_RE))\\*(180/PI))), AC_MAG := ?(ACType==VALUE)(@EMF):(?(ACType==MAG_PHASE)(@AC_MAG):(SQRT((@AC_RE)^2+(@AC_IM)^2))));', '')
+				$end 'SimModelDefs'
+				$begin 'Properties'
+					TextProp('Title_English (United States)', 'RHD', '', 'Voltage Source')
+					TextProp('Title_English (United Kingdom)', 'RHD', '', 'Voltage Source')
+					TextProp('Title_German (Germany)', 'RHD', '', 'Spannungsquelle')
+					TextProp('N1_English (United Kingdom)', 'RHD', '', 'Node1')
+					TextProp('N1_German (Germany)', 'RHD', '', 'Knoten 1')
+					TextProp('N2_English (United Kingdom)', 'RHD', '', 'Node2')
+					TextProp('N2_German (Germany)', 'RHD', '', 'Knoten 1')
+					TextProp('AC_IM_English (United Kingdom)', 'RHD', '', 'Imaginary Part of EMF (AC)')
+					TextProp('AC_IM_German (Germany)', 'RHD', '', 'Imaginärteil der EMK (AC)')
+					TextProp('EMF_English (United Kingdom)', 'RHD', '', 'EMF Value')
+					TextProp('EMF_German (Germany)', 'RHD', '', 'EMF')
+					TextProp('FREQ_English (United Kingdom)', 'RHD', '', 'Frequency')
+					TextProp('FREQ_German (Germany)', 'RHD', '', 'Frequenz')
+					TextProp('TPERIO_English (United Kingdom)', 'RHD', '', 'Period')
+					TextProp('TPERIO_German (Germany)', 'RHD', '', 'Periode')
+					TextProp('AMPL_English (United Kingdom)', 'RHD', '', 'Amplitude')
+					TextProp('AMPL_German (Germany)', 'RHD', '', 'Amplitude')
+					TextProp('PHASE_English (United Kingdom)', 'RHD', '', 'Phase')
+					TextProp('PHASE_German (Germany)', 'RHD', '', 'Phasenlage')
+					TextProp('PERIO_English (United Kingdom)', 'RHD', '', 'Periodic')
+					TextProp('PERIO_German (Germany)', 'RHD', '', 'Periodisch')
+					TextProp('OFF_English (United Kingdom)', 'RHD', '', 'Offset')
+					TextProp('OFF_German (Germany)', 'RHD', '', 'Offset')
+					TextProp('TDELAY_English (United Kingdom)', 'RHD', '', 'Initial Delay')
+					TextProp('TDELAY_German (Germany)', 'RHD', '', 'Anfangsverzögerung')
+					TextProp('TRISE_English (United Kingdom)', 'RHD', '', 'Rise Time')
+					TextProp('TRISE_German (Germany)', 'RHD', '', 'Steigzeit')
+					TextProp('TFALL_English (United Kingdom)', 'RHD', '', 'Fall Time')
+					TextProp('TFALL_German (Germany)', 'RHD', '', 'Fallzeit')
+					TextProp('PWIDTH_English (United Kingdom)', 'RHD', '', 'Pulse Width')
+					TextProp('PWIDTH_German (Germany)', 'RHD', '', 'Impulsdauer')
+					TextProp('PARTDERIV_English (United Kingdom)', 'RHD', '', 'Partial Derivation')
+					TextProp('PARTDERIV_German (Germany)', 'RHD', '', 'Partielle Ableitung')
+					TextProp('AC_MAG_English (United Kingdom)', 'RHD', '', 'Magnitude of EMF (AC)')
+					TextProp('AC_MAG_German (Germany)', 'RHD', '', 'Amplitude der EMK (AC)')
+					TextProp('AC_PHASE_English (United Kingdom)', 'RHD', '', 'Phase Shift of EMF (AC)')
+					TextProp('AC_PHASE_German (Germany)', 'RHD', '', 'Phasenlage der EMK (AC)')
+					TextProp('AC_RE_English (United Kingdom)', 'RHD', '', 'Real Part of EMF (AC)')
+					TextProp('AC_RE_German (Germany)', 'RHD', '', 'Realteil der EMK (AC)')
+					TextProp('SPC_English (United Kingdom)', 'RHD', '', 'Spice compatibility')
+					TextProp('SPC_German (Germany)', 'RHD', '', 'Spicekompatibilität')
+					TextProp('V_English (United Kingdom)', 'RHD', '', 'Voltage')
+					TextProp('V_German (Germany)', 'RHD', '', 'Spannung')
+					TextProp('I_English (United Kingdom)', 'RHD', '', 'Current')
+					TextProp('I_German (Germany)', 'RHD', '', 'Strom')
+					TextProp('dV_English (United Kingdom)', 'RHD', '', 'Derivative of Voltage')
+					TextProp('dV_German (Germany)', 'RHD', '', 'Ableitung der Spannung')
+					TextProp('dI_English (United Kingdom)', 'RHD', '', 'Derivative of Current')
+					TextProp('dI_German (Germany)', 'RHD', '', 'Ableitung des Stromes')
+				$end 'Properties'
+				CompExtID=2
+				$begin 'Parameters'
+					TextProp('InstanceName', 'D', '', CB='InstanceName', '')
+					ButtonProp('SimplorerNetlist', 'HD', '', 'INTERN @Type ?InstanceName(@InstanceName):(@(Refbase)@(ID)) N1:= %0 , N2:= %1 (?(Type==E)(EMF:= @(EMF), PARTDERIV:= @(PARTDERIV),):(?(Type==ETRAPEZ)(TRISE:= @(TRISE), TFALL:= @(TFALL), PWIDTH:= @(PWIDTH),):(FREQ:= @(FREQ),) TPERIO:=@(TPERIO), AMPL:=@(AMPL), PHASE:=@(PHASE), PERIO:=@(PERIO), OFF:=@(OFF), TDELAY:=@(TDELAY),) SPC:=@(SPC), AC_PHASE := ?(ACType==VALUE)(0):(?(ACType==MAG_PHASE)(@AC_PHASE):(ATAN((@AC_IM)/(@AC_RE))\\*(180/PI))), AC_MAG := ?(ACType==VALUE)(@EMF):(?(ACType==MAG_PHASE)(@AC_MAG):(SQRT((@AC_RE)^2+(@AC_IM)^2))));', 'INTERN @Type ?InstanceName(@InstanceName):(@(Refbase)@(ID)) N1:= %0 , N2:= %1 (?(Type==E)(EMF:= @(EMF), PARTDERIV:= @(PARTDERIV),):(?(Type==ETRAPEZ)(TRISE:= @(TRISE), TFALL:= @(TFALL), PWIDTH:= @(PWIDTH),):(FREQ:= @(FREQ),) TPERIO:=@(TPERIO), AMPL:=@(AMPL), PHASE:=@(PHASE), PERIO:=@(PERIO), OFF:=@(OFF), TDELAY:=@(TDELAY),) SPC:=@(SPC), AC_PHASE := ?(ACType==VALUE)(0):(?(ACType==MAG_PHASE)(@AC_PHASE):(ATAN((@AC_IM)/(@AC_RE))\\*(180/PI))), AC_MAG := ?(ACType==VALUE)(@EMF):(?(ACType==MAG_PHASE)(@AC_MAG):(SQRT((@AC_RE)^2+(@AC_IM)^2))));', 1, ButtonPropClientData())
+					MenuProp('ACType', 'D', '', 'MAG_PHASE,REAL_IMAG,VALUE', 0)
+					MenuProp('Type', 'D', '', 'E,ESINE,EPULSE,ETRIANG,ETRAPEZ,EST_RISE,EST_FALL', 0)
+					ButtonProp('CompDlg', 'D', 'Options', 'E', 'E', 529, ButtonPropClientData(RMS(false, '')))
+					CheckboxProp('SetPeriod', 'RHD', '', false)
+					MenuProp('SimulatorModel', 'D', '', 'E', 0)
+				$end 'Parameters'
+				$begin 'Quantities'
+					QuantityProp('AC_IM', 'D', 'Imaginary Part of EMF (AC)', '0V', 'V', Attrs(Info('AC_IM', 0, 'V', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '0V', false, false))
+					QuantityProp('EMF', 'D', 'EMF Value', '1V', 'V', Attrs(Info('EMF', 0, 'V', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', true, false, false, '1V', false, false))
+					QuantityProp('FREQ', 'D', 'Frequency', '50Hz', 'Hz', Attrs(Info('FREQ', 0, 'Hz', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '50Hz', false, false))
+					QuantityProp('TPERIO', 'D', 'Period', '0.02s', 's', Attrs(Info('TPERIO', 0, 's', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '0.02s', false, false))
+					QuantityProp('AMPL', 'D', 'Amplitude', '326V', 'V', Attrs(Info('AMPL', 0, 'V', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '326V', false, false))
+					QuantityProp('PHASE', 'D', 'Phase', '0deg', 'deg', Attrs(Info('PHASE', 0, 'deg', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '0deg', false, false))
+					QuantityProp('PERIO', 'D', 'Periodic', '1', '', Attrs(Info('PERIO', 0, '', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '1', false, false))
+					QuantityProp('OFF', 'D', 'Offset', '0V', 'V', Attrs(Info('OFF', 0, 'V', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '0V', false, false))
+					QuantityProp('TDELAY', 'D', 'Initial Delay', '0s', 's', Attrs(Info('TDELAY', 0, 's', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '0s', false, false))
+					QuantityProp('TRISE', 'D', 'Rise Time', '0.005s', 's', Attrs(Info('TRISE', 0, 's', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '0.005s', false, false))
+					QuantityProp('TFALL', 'D', 'Fall Time', '0.01s', 's', Attrs(Info('TFALL', 0, 's', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '0.01s', false, false))
+					QuantityProp('PWIDTH', 'D', 'Pulse Width', '0.005s', 's', Attrs(Info('PWIDTH', 0, 's', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '0.005s', false, false))
+					QuantityProp('PARTDERIV', 'D', 'Partial Derivation', '1', '', Attrs(Info('PARTDERIV', 0, '', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '1', false, false))
+					QuantityProp('AC_MAG', 'D', 'Magnitude of EMF (AC)', '0.001V', 'V', Attrs(Info('AC_MAG', 0, 'V', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '0.001V', false, false))
+					QuantityProp('AC_PHASE', 'D', 'Phase Shift of EMF (AC)', '0deg', 'deg', Attrs(Info('AC_PHASE', 0, 'deg', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '0deg', false, false))
+					QuantityProp('AC_RE', 'D', 'Real Part of EMF (AC)', '0.001V', 'V', Attrs(Info('AC_RE', 0, 'V', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '0.001V', false, false))
+					QuantityProp('SPC', 'D', 'Spice compatibility', '0', '', Attrs(Info('SPC', 0, '', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '0', false, false))
+					QuantityProp('V', 'D', 'Voltage', '0V', 'V', Attrs(Info('V', 0, 'V', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, true, '0V', false, false))
+					QuantityProp('I', 'D', 'Current', '0A', 'A', Attrs(Info('I', 0, 'A', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, true, '0A', false, false))
+					QuantityProp('dV', 'D', 'Derivative of Voltage', '0V_per_s', 'V_per_s', Attrs(Info('dV', 0, 'V_per_s', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0V_per_s', false, false))
+					QuantityProp('dI', 'D', 'Derivative of Current', '0A_per_s', 'A_per_s', Attrs(Info('dI', 0, 'A_per_s', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0A_per_s', false, false))
+				$end 'Quantities'
+			$end 'E'
+			$begin 'S'
+				Library='Simplorer Elements\\Basic Elements\\Circuit\\Ideal Switches'
+				Refbase='S'
+				NumParts=1
+				ModSinceLib=false
+				Terminal('N1', 'N1', 'A', false, 27, 0, 'Node1', 'Electrical', '')
+				Terminal('N2', 'N2', 'A', false, 28, 0, 'Node2', 'Electrical', '')
+				$begin 'SimModelDefs'
+					S(1, 'INTERN S ?InstanceName(@InstanceName):(@(Refbase)@(ID)) N1 := %0 , N2 := %1 ( CTRL:=@CTRL) ;', '')
+				$end 'SimModelDefs'
+				$begin 'Properties'
+					TextProp('Title_English (United States)', 'RHD', '', 'Ideal Switch')
+					TextProp('Title_English (United Kingdom)', 'RHD', '', 'Ideal Switch')
+					TextProp('Title_German (Germany)', 'RHD', '', 'Idealer Schalter')
+					TextProp('N1_English (United Kingdom)', 'RHD', '', 'Node1')
+					TextProp('N1_German (Germany)', 'RHD', '', 'Knoten 1')
+					TextProp('N2_English (United Kingdom)', 'RHD', '', 'Node2')
+					TextProp('N2_German (Germany)', 'RHD', '', 'Knoten 1')
+					TextProp('CTRL_English (United Kingdom)', 'RHD', '', 'Control Signal')
+					TextProp('CTRL_German (Germany)', 'RHD', '', 'Steuersignal')
+					TextProp('V_English (United Kingdom)', 'RHD', '', 'Voltage')
+					TextProp('V_German (Germany)', 'RHD', '', 'Spannung')
+					TextProp('I_English (United Kingdom)', 'RHD', '', 'Current')
+					TextProp('I_German (Germany)', 'RHD', '', 'Strom')
+					TextProp('dV_English (United Kingdom)', 'RHD', '', 'Derivative of Voltage')
+					TextProp('dV_German (Germany)', 'RHD', '', 'Ableitung der Spannung')
+					TextProp('dI_English (United Kingdom)', 'RHD', '', 'Derivative of Current')
+					TextProp('dI_German (Germany)', 'RHD', '', 'Ableitung des Stromes')
+				$end 'Properties'
+				CompExtID=2
+				$begin 'Parameters'
+					TextProp('InstanceName', 'D', '', '')
+					ButtonProp('SimplorerNetlist', 'HD', '', 'INTERN S ?InstanceName(@InstanceName):(@(Refbase)@(ID)) N1 := %0 , N2 := %1 ( CTRL:=@CTRL) ;', 'INTERN S ?InstanceName(@InstanceName):(@(Refbase)@(ID)) N1 := %0 , N2 := %1 ( CTRL:=@CTRL) ;', 1, ButtonPropClientData())
+					ButtonProp('CompDlgWizard', 'D', '', 'CompDlgWizard', 'CompDlgWizard', -1, ButtonPropClientData(CompDlgWizardData(0, true, CWWAllData(0, PageData(CWWPageData(0, 0, 0, 290, 142, 'Parameters', 8, 5, CWWData(0, '', 10008, 'V', 9, 100, 100, 100, 100, 7, 65, 122, 95, 132, 5, '', 0), CWWCheckBoxData(0, '', 12, 10008, 4, 0, 'Name(V)', '1', '0'), 5, CWWData(0, '', 10007, 'I', 9, 100, 100, 100, 100, 6, 15, 122, 45, 132, 5, '', 0), CWWCheckBoxData(0, '', 12, 10007, 4, 0, 'Name(I)', '1', '0'), 4, CWWData(0, '', 10006, '', 11, 100, 100, 100, 100, 5, 7, 110, 283, 137, 4, '', 0), CWWGroupData(0, 'Default Outputs'), 4, CWWData(0, '', 10005, '', 15, 100, 100, 100, 100, 4, 7, 28, 283, 105, 4, '', 0), CWWGroupData(0, 'Parameters'), 5, CWWData(0, '', 10004, '', 6, 100, 100, 100, 100, 3, 241, 8, 283, 18, 5, '', 0), CWWCheckBoxData(0, '', 10, 10004, 0, 0, 'Show', '1', '0'), 3, CWWData(0, 'Instance Name', 10003, '', 7, 100, 100, 100, 100, 2, 37, 7, 236, 19, 3, '', 0), CWWEditData(0, '', 4, 0), 2, CWWData(0, '', 10002, '', 5, 100, 100, 100, 100, 1, 7, 9, 27, 17, 2, '', 0), CWWStaticData(0, 0, 'Name'), 9, CWWData(0, '', 10001, '', 15, 100, 100, 100, 100, 0, 16, 40, 273, 96, 9, '', 0), CWWListBoxData(0, 4, 0, 1, 4, 5, 1, 'CTRL'))), CalcData(), SymbolCalcData()))))
+					MenuProp('SimulatorModel', 'D', '', 'S', 0)
+				$end 'Parameters'
+				$begin 'Quantities'
+					QuantityProp('CTRL', 'D', 'Control Signal', '0', '', Attrs(Info('CTRL', 0, '', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', true, false, false, '0', false, false))
+					QuantityProp('V', 'D', 'Voltage', '0V', 'V', Attrs(Info('V', 0, 'V', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, true, '0V', false, false))
+					QuantityProp('I', 'D', 'Current', '0A', 'A', Attrs(Info('I', 0, 'A', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, true, '0A', false, false))
+					QuantityProp('dV', 'D', 'Derivative of Voltage', '0V_per_s', 'V_per_s', Attrs(Info('dV', 0, 'V_per_s', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0V_per_s', false, false))
+					QuantityProp('dI', 'D', 'Derivative of Current', '0A_per_s', 'A_per_s', Attrs(Info('dI', 0, 'A_per_s', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0A_per_s', false, false))
+				$end 'Quantities'
+			$end 'S'
+			$begin 'D'
+				Library='Simplorer Elements\\Basic Elements\\Circuit\\Semiconductors System Level'
+				Refbase='D'
+				NumParts=1
+				ModSinceLib=false
+				Terminal('A', 'A', 'A', false, 38, 0, 'Anode', 'Electrical', '')
+				Terminal('C', 'C', 'A', false, 39, 0, 'Cathode', 'Electrical', '')
+				$begin 'SimModelDefs'
+					D(1, 'INTERN @Type ?InstanceName(@InstanceName):(@(Refbase)@(ID)) A:= %0 , C:= %1 ( ?(Type==D)(CH:=@CH)?(Type==DXY)(FILE:=?(NLType==CH_FILE)(@(CH_FILE))?(NLType==CH_STRG)(@(CH_STRG))?(NLType==CH_DATA)(@(CH_DATA)))?(Type==DEXP)(RR:=@(RR), ISAT:=@(ISAT), VT:=@(VT))?(Type==DEQUL)(VF:=@(VF), RB:=@(RB), RR:=@(RR)) ) ;', '')
+				$end 'SimModelDefs'
+				$begin 'Properties'
+					TextProp('Title_English (United States)', 'RHD', '', 'Diode')
+					TextProp('Title_English (United Kingdom)', 'RHD', '', 'Diode')
+					TextProp('Title_German (Germany)', 'RHD', '', 'Diode')
+					TextProp('A_English (United Kingdom)', 'RHD', '', 'Anode')
+					TextProp('A_German (Germany)', 'RHD', '', 'Anode')
+					TextProp('C_English (United Kingdom)', 'RHD', '', 'Cathode')
+					TextProp('C_German (Germany)', 'RHD', '', 'Kathode')
+					TextProp('V_English (United Kingdom)', 'RHD', '', 'Voltage')
+					TextProp('V_German (Germany)', 'RHD', '', 'Spannung')
+					TextProp('I_English (United Kingdom)', 'RHD', '', 'Current')
+					TextProp('I_German (Germany)', 'RHD', '', 'Strom')
+					TextProp('G_English (United Kingdom)', 'RHD', '', 'Conductivity')
+					TextProp('G_German (Germany)', 'RHD', '', 'Leitfähigkeit')
+					TextProp('dV_English (United Kingdom)', 'RHD', '', 'Derivative of Voltage')
+					TextProp('dV_German (Germany)', 'RHD', '', 'Ableitung der Spannung')
+					TextProp('CH_English (United Kingdom)', 'RHD', '', 'Characteristic')
+					TextProp('CH_German (Germany)', 'RHD', '', 'Kennlinie')
+					TextProp('VF_English (United Kingdom)', 'RHD', '', 'Forward Voltage')
+					TextProp('VF_German (Germany)', 'RHD', '', 'Durchlassspannung')
+					TextProp('RB_English (United Kingdom)', 'RHD', '', 'Bulk Resistance')
+					TextProp('RB_German (Germany)', 'RHD', '', 'Bahnwiderstand')
+					TextProp('RR_English (United Kingdom)', 'RHD', '', 'Reverse Resistance')
+					TextProp('RR_German (Germany)', 'RHD', '', 'Sperrwiderstand')
+					TextProp('ISAT_English (United Kingdom)', 'RHD', '', 'Saturation Current')
+					TextProp('ISAT_German (Germany)', 'RHD', '', 'Sättigungsstrom')
+					TextProp('VT_English (United Kingdom)', 'RHD', '', 'Thermal Voltage')
+					TextProp('VT_German (Germany)', 'RHD', '', 'Temperaturspannung')
+					TextProp('FILE_English (United Kingdom)', 'RHD', '', 'Characteristic')
+					TextProp('FILE_German (Germany)', 'RHD', '', 'Kennlinie')
+					TextProp('FILE_STRG_English (United Kingdom)', 'RHD', '', 'Characteristic File Reference')
+					TextProp('FILE_STRG_German (Germany)', 'RHD', '', 'Kennlinie Dateireferenz')
+					TextProp('dI_English (United Kingdom)', 'RHD', '', 'Derivative of Current')
+					TextProp('dI_German (Germany)', 'RHD', '', 'Ableitung des Stromes')
+				$end 'Properties'
+				CompExtID=2
+				$begin 'Parameters'
+					ButtonProp('CH_FILE', 'D', 'Characteristic', '', '<Project>', 3, ButtonPropClientData(InternalFormatText='<Project>'))
+					TextProp('CH_STRG', 'D', 'Characteristic File Reference', '')
+					TextProp('InstanceName', 'D', '', '')
+					ButtonProp('SimplorerNetlist', 'HD', '', 'INTERN @Type ?InstanceName(@InstanceName):(@(Refbase)@(ID)) A:= %0 , C:= %1 ( ?(Type==D)(CH:=@CH)?(Type==DXY)(FILE:=?(NLType==CH_FILE)(@(CH_FILE))?(NLType==CH_STRG)(@(CH_STRG))?(NLType==CH_DATA)(@(CH_DATA)))?(Type==DEXP)(RR:=@(RR), ISAT:=@(ISAT), VT:=@(VT))?(Type==DEQUL)(VF:=@(VF), RB:=@(RB), RR:=@(RR)) ) ;', 'INTERN @Type ?InstanceName(@InstanceName):(@(Refbase)@(ID)) A:= %0 , C:= %1 ( ?(Type==D)(CH:=@CH)?(Type==DXY)(FILE:=?(NLType==CH_FILE)(@(CH_FILE))?(NLType==CH_STRG)(@(CH_STRG))?(NLType==CH_DATA)(@(CH_DATA)))?(Type==DEXP)(RR:=@(RR), ISAT:=@(ISAT), VT:=@(VT))?(Type==DEQUL)(VF:=@(VF), RB:=@(RB), RR:=@(RR)) ) ;', 1, ButtonPropClientData())
+					MenuProp('NLTYPE', 'D', '', 'CH_DATA,CH_STRG,CH_FILE', 0)
+					MenuProp('Type', 'D', '', 'DEQUL,D,DXY,DEXP', 0)
+					TextProp('CH_DATA', 'D', '', '0')
+					ButtonProp('CompDlg', 'D', 'Options', 'D', 'D', 536, ButtonPropClientData())
+					MenuProp('SimulatorModel', 'D', '', 'D', 0)
+				$end 'Parameters'
+				$begin 'Quantities'
+					QuantityProp('V', 'D', 'Voltage', '0V', 'V', Attrs(Info('V', 0, 'V', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, true, '0V', false, false))
+					QuantityProp('I', 'D', 'Current', '0A', 'A', Attrs(Info('I', 0, 'A', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, true, '0A', false, false))
+					QuantityProp('G', 'D', 'Conductance', '0sie', 'sie', Attrs(Info('G', 0, 'sie', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0sie', false, false))
+					QuantityProp('dV', 'D', 'Derivative of Voltage', '0V_per_s', 'V_per_s', Attrs(Info('dV', 0, 'V_per_s', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0V_per_s', false, false))
+					QuantityProp('CH', 'D', 'Characteristic', CB='CHvalidation', '_Empty', '', Attrs(Info('CH', 0, '', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', true, false, false, '_Empty', false, false))
+					QuantityProp('VF', 'D', 'Forward Voltage', '0.8V', 'V', Attrs(Info('VF', 0, 'V', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '0.8V', false, false))
+					QuantityProp('RB', 'D', 'Bulk Resistance', '0.001ohm', 'ohm', Attrs(Info('RB', 0, 'ohm', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '0.001ohm', false, false))
+					QuantityProp('RR', 'D', 'Reverse Resistance', '100000ohm', 'ohm', Attrs(Info('RR', 0, 'ohm', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '100000ohm', false, false))
+					QuantityProp('ISAT', 'D', 'Saturation Current', '1e-012A', 'A', Attrs(Info('ISAT', 0, 'A', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '1e-012A', false, false))
+					QuantityProp('VT', 'D', 'Thermal Voltage', '0.035V', 'V', Attrs(Info('VT', 0, 'V', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '0.035V', false, false))
+					QuantityProp('dI', 'D', 'Derivative of Current', '0A_per_s', 'A_per_s', Attrs(Info('dI', 0, 'A_per_s', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0A_per_s', false, false))
+				$end 'Quantities'
+			$end 'D'
+			$begin 'cuk'
+				Library=''
+				Refbase='U'
+				NumParts=1
+				ModSinceLib=false
+				$begin 'Properties'
+					TextProp('Representation', 'SRD', '', 'cuk')
+					TextProp('Owner', 'SRD', '', 'Simplorer')
+				$end 'Properties'
+				CompExtID=4
+				$begin 'Parameters'
+					TextProp('InstanceName', 'D', '', '')
+				$end 'Parameters'
+			$end 'cuk'
+		$end 'Compdefs'
+	$end 'Definitions'
+	DesignIDServer=2
+	MoveBackwards=false
+	$begin 'SimplorerCircuit'
+		RepRewriteV2=true
+		Name='cuk'
+		DesignID=0
+		$begin 'DesignSettings'
+			$begin 'SimSettings'
+			$end 'SimSettings'
+			$begin 'StatisticalPackage'
+				Enable=false
+			$end 'StatisticalPackage'
+		$end 'DesignSettings'
+		$begin 'Circuit'
+			ComponentName='cuk'
+			$begin 'GenericDefaults'
+				TextProp('InstanceName', 'D', '', '')
+			$end 'GenericDefaults'
+			AutoFP=''
+			$begin 'DesignDatasets'
+				NextUniqueID=0
+				MoveBackwards=false
+				DatasetType='DesignDatasetType'
+				$begin 'DatasetDefinitions'
+				$end 'DatasetDefinitions'
+			$end 'DesignDatasets'
+			$begin 'Compinst'
+				ID='1'
+				Status='Status'
+				CompName='Simplorer Elements\\Basic Elements\\Tools\\Time Functions:PULSE'
+				$begin 'Properties'
+					TextProp('ID', 'SRID', '', '1')
+				$end 'Properties'
+				$begin 'Parameters'
+					TextProp('InstanceName', 'OD', '', CB='InstanceName', 'Square_wave1')
+					ButtonProp('CompDlg', 'OD', 'Options', 'TFPULSE', 'TFPULSE', 635, ButtonPropClientData())
+					CheckboxProp('SetPeriod', 'ORHD', '', true)
+				$end 'Parameters'
+				$begin 'Quantities'
+					QuantityValueProp('FREQ', 'OD', 'Frequency', '5000Hz', 0, 'Hz', '5000Hz', false, false, false)
+					QuantityValueProp('TPERIO', 'OD', 'Period', '0.0002s', 0, 's', '0.0002s', false, false, false)
+					QuantityValueProp('AMPL', 'OD', 'Amplitude', '1', 0, '', '1', false, false, false)
+					QuantityValueProp('OFF', 'OD', 'Offset', '1', 0, '', '1', false, false, false)
+				$end 'Quantities'
+			$end 'Compinst'
+			$begin 'Compinst'
+				ID='2'
+				Status='Status'
+				CompName='Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements:R'
+				$begin 'Properties'
+					TextProp('ID', 'SRID', '', '2')
+				$end 'Properties'
+				$begin 'Parameters'
+					TextProp('InstanceName', 'OD', '', CB='InstanceName', 'R1')
+					ButtonProp('CompDlg', 'OD', 'Options', 'R', 'R', 525, ButtonPropClientData())
+				$end 'Parameters'
+				$begin 'Quantities'
+					QuantityValueProp('R', 'OD', 'Resistance', '3.2ohm', 0, 'ohm', '3.2ohm', false, false, false)
+				$end 'Quantities'
+			$end 'Compinst'
+			$begin 'Compinst'
+				ID='3'
+				Status='Status'
+				CompName='Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements:C'
+				$begin 'Properties'
+					TextProp('ID', 'SRID', '', '3')
+				$end 'Properties'
+				$begin 'Parameters'
+					TextProp('InstanceName', 'OD', '', CB='InstanceName', 'C1')
+					CheckboxProp('UseInitialConditions', 'OD', '', true)
+					ValueProp('V0', 'OD', '', '50V', 0)
+					ButtonProp('CompDlg', 'OD', 'Options', 'C', 'C', 526, ButtonPropClientData())
+				$end 'Parameters'
+				$begin 'Quantities'
+					QuantityValueProp('C', 'OD', 'Capacitance', '5e-005farad', 0, 'farad', '5e-005farad', false, false, false)
+				$end 'Quantities'
+			$end 'Compinst'
+			$begin 'Compinst'
+				ID='4'
+				Status='Status'
+				CompName='Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements:L'
+				$begin 'Properties'
+					TextProp('ID', 'SRID', '', '4')
+				$end 'Properties'
+				$begin 'Parameters'
+					TextProp('InstanceName', 'OD', '', CB='InstanceName', 'L1')
+					CheckboxProp('UseInitialConditions', 'OD', '', true)
+					ValueProp('I0', 'OD', '', '7A', 0)
+					ButtonProp('CompDlg', 'OD', 'Options', 'L', 'L', 527, ButtonPropClientData())
+				$end 'Parameters'
+				$begin 'Quantities'
+					QuantityProp('LOUT', 'D', '', '0', '', Attrs(Info('LOUT', 0, '', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0', false, false))
+				$end 'Quantities'
+			$end 'Compinst'
+			$begin 'Compinst'
+				ID='5'
+				Status='Status'
+				CompName='Simplorer Elements\\Basic Elements\\Circuit\\Sources:E'
+				$begin 'Properties'
+					TextProp('ID', 'SRID', '', '5')
+				$end 'Properties'
+				$begin 'Parameters'
+					TextProp('InstanceName', 'OD', '', CB='InstanceName', 'E1')
+					ButtonProp('CompDlg', 'OD', 'Options', 'E', 'E', 529, ButtonPropClientData(RMS(false, '')))
+					CheckboxProp('SetPeriod', 'ORHD', '', true)
+				$end 'Parameters'
+				$begin 'Quantities'
+					QuantityValueProp('EMF', 'OD', 'EMF Value', '25V', 0, 'V', '25V', false, false, false)
+					QuantityValueProp('TPERIO', 'OD', 'Period', 'Tend + 1', 0, 's', 'Tend + 1', false, false, false)
+				$end 'Quantities'
+			$end 'Compinst'
+			$begin 'Compinst'
+				ID='7'
+				Status='Status'
+				CompName='Simplorer Elements\\Basic Elements\\Circuit\\Semiconductors System Level:D'
+				$begin 'Properties'
+					TextProp('ID', 'SRID', '', '7')
+				$end 'Properties'
+				$begin 'Parameters'
+					TextProp('InstanceName', 'OD', '', CB='InstanceName', 'D1')
+					ButtonProp('CompDlg', 'OD', 'Options', 'D', 'D', 536, ButtonPropClientData())
+				$end 'Parameters'
+			$end 'Compinst'
+			$begin 'Compinst'
+				ID='8'
+				Status='Status'
+				CompName='Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements:C'
+				$begin 'Properties'
+					TextProp('ID', 'SRID', '', '8')
+				$end 'Properties'
+				$begin 'Parameters'
+					TextProp('InstanceName', 'OD', '', CB='InstanceName', 'C2')
+					CheckboxProp('UseInitialConditions', 'OD', '', true)
+					ValueProp('V0', 'OD', '', '-25V', 0)
+					ButtonProp('CompDlg', 'OD', 'Options', 'C', 'C', 526, ButtonPropClientData())
+				$end 'Parameters'
+				$begin 'Quantities'
+					QuantityValueProp('C', 'OD', 'Capacitance', '8e-005farad', 0, 'farad', '8e-005farad', false, false, false)
+				$end 'Quantities'
+			$end 'Compinst'
+			$begin 'Compinst'
+				ID='9'
+				Status='Status'
+				CompName='Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements:L'
+				$begin 'Properties'
+					TextProp('ID', 'SRID', '', '9')
+				$end 'Properties'
+				$begin 'Parameters'
+					TextProp('InstanceName', 'OD', '', CB='InstanceName', 'L2')
+					CheckboxProp('UseInitialConditions', 'OD', '', true)
+					ValueProp('I0', 'OD', '', '7A', 0)
+					ButtonProp('CompDlg', 'OD', 'Options', 'L', 'L', 527, ButtonPropClientData())
+				$end 'Parameters'
+				$begin 'Quantities'
+					QuantityProp('LOUT', 'D', '', '0', '', Attrs(Info('LOUT', 0, '', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0', false, false))
+				$end 'Quantities'
+			$end 'Compinst'
+			$begin 'Compinst'
+				ID='6'
+				Status='Status'
+				CompName='Simplorer Elements\\Basic Elements\\Circuit\\Ideal Switches:S'
+				$begin 'Properties'
+					TextProp('ID', 'SRID', '', '6')
+				$end 'Properties'
+				$begin 'Parameters'
+					TextProp('InstanceName', 'OD', '', CB='InstanceName', 'S1')
+					ButtonProp('CompDlgWizard', 'OD', '', 'CompDlgWizard', 'CompDlgWizard', -1, ButtonPropClientData(CompDlgWizardData(0, true, CWWAllData(0, PageData(CWWPageData(0, 0, 0, 290, 142, 'Parameters', 8, 5, CWWData(0, '', 10008, 'V', 9, 100, 100, 100, 100, 7, 65, 122, 95, 132, 5, '', 0), CWWCheckBoxData(0, '', 12, 10008, 4, 0, 'Name(V)', '1', '0'), 5, CWWData(0, '', 10007, 'I', 9, 100, 100, 100, 100, 6, 15, 122, 45, 132, 5, '', 0), CWWCheckBoxData(0, '', 12, 10007, 4, 0, 'Name(I)', '1', '0'), 4, CWWData(0, '', 10006, '', 11, 100, 100, 100, 100, 5, 7, 110, 283, 137, 4, '', 0), CWWGroupData(0, 'Default Outputs'), 4, CWWData(0, '', 10005, '', 15, 100, 100, 100, 100, 4, 7, 28, 283, 105, 4, '', 0), CWWGroupData(0, 'Parameters'), 5, CWWData(0, '', 10004, '', 6, 100, 100, 100, 100, 3, 241, 8, 283, 18, 5, '', 0), CWWCheckBoxData(0, '', 10, 10004, 0, 0, 'Show', '1', '0'), 3, CWWData(0, 'Instance Name', 10003, '', 7, 100, 100, 100, 100, 2, 37, 7, 236, 19, 3, '', 0), CWWEditData(0, '', 4, 0), 2, CWWData(0, '', 10002, '', 5, 100, 100, 100, 100, 1, 7, 9, 27, 17, 2, '', 0), CWWStaticData(0, 0, 'Name'), 9, CWWData(0, '', 10001, '', 15, 100, 100, 100, 100, 0, 16, 40, 273, 96, 9, '', 0), CWWListBoxData(0, 4, 0, 1, 4, 5, 1, 'CTRL'))), CalcData(), SymbolCalcData()))))
+				$end 'Parameters'
+				$begin 'Quantities'
+					QuantityValueProp('CTRL', 'OD', 'Control Signal', 'Square_wave1.VAL', 0, '', 'Square_wave1.VAL', false, false, false)
+				$end 'Quantities'
+			$end 'Compinst'
+			$begin 'GlobalPort'
+				PortName='0'
+			$end 'GlobalPort'
+			$begin 'Net'
+				NetName='0'
+				$begin 'Quantities'
+					QuantityProp('V', 'RD', '', '0V', 'V', Attrs(Info('V', 0, 'V', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0V', false, false))
+					QuantityProp('dV', 'RD', '', '0V_per_s', 'V_per_s', Attrs(Info('dV', 0, 'V_per_s', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0V_per_s', false, false))
+				$end 'Quantities'
+				NetGPorts='0'
+				NetPin('6', 0)
+				NetPin('5', 0)
+				NetPin('8', 1)
+				NetPin('7', 1)
+				NetPin('2', 1)
+			$end 'Net'
+			$begin 'Net'
+				NetName='N0019'
+				$begin 'Quantities'
+					QuantityProp('V', 'RD', '', '0V', 'V', Attrs(Info('V', 0, 'V', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0V', false, false))
+					QuantityProp('dV', 'RD', '', '0V_per_s', 'V_per_s', Attrs(Info('dV', 0, 'V_per_s', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0V_per_s', false, false))
+				$end 'Quantities'
+				NetPin('5', 1)
+				NetPin('4', 0)
+			$end 'Net'
+			$begin 'Net'
+				NetName='N0021'
+				$begin 'Quantities'
+					QuantityProp('V', 'RD', '', '0V', 'V', Attrs(Info('V', 0, 'V', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0V', false, false))
+					QuantityProp('dV', 'RD', '', '0V_per_s', 'V_per_s', Attrs(Info('dV', 0, 'V_per_s', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0V_per_s', false, false))
+				$end 'Quantities'
+				NetPin('9', 1)
+				NetPin('3', 1)
+				NetPin('7', 0)
+			$end 'Net'
+			$begin 'Net'
+				NetName='N0024'
+				$begin 'Quantities'
+					QuantityProp('V', 'RD', '', '0V', 'V', Attrs(Info('V', 0, 'V', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0V', false, false))
+					QuantityProp('dV', 'RD', '', '0V_per_s', 'V_per_s', Attrs(Info('dV', 0, 'V_per_s', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0V_per_s', false, false))
+				$end 'Quantities'
+				NetPin('6', 1)
+				NetPin('4', 1)
+				NetPin('3', 0)
+			$end 'Net'
+			$begin 'Net'
+				NetName='out'
+				$begin 'Quantities'
+					QuantityProp('V', 'RD', '', '0V', 'V', Attrs(Info('V', 0, 'V', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0V', false, false))
+					QuantityProp('dV', 'RD', '', '0V_per_s', 'V_per_s', Attrs(Info('dV', 0, 'V_per_s', IsUnconstrained=false), 'Out', 'BeforeAnalogSolver', false, false, false, '0V_per_s', false, false))
+				$end 'Quantities'
+				NetPin('8', 0)
+				NetPin('9', 0)
+				NetPin('2', 0)
+			$end 'Net'
+		$end 'Circuit'
+		$begin 'Schematic'
+			PPortCounter=0
+			BusEntryCounter=0
+			$begin 'Page'
+				PageSize('A')
+				PageData(Origin(x='0mm', y='0mm'), PageSize(x='0', y='0'), Margins(x='0', y='0'), 0, 0, 0)
+				PageNumber=1
+				$begin 'SchGPort'
+					SchPortInst('ground_earth', '33', '0', 19, 0.0889, 0.09906, 0, false, 'Symbols:ground_earth', 0)
+					$begin 'Properties'
+						ButtonProp('EditPort', 'HD', '', '0', '0', 0, ButtonPropClientData())
+					$end 'Properties'
+				$end 'SchGPort'
+				$begin 'SchCompDef'
+					SchCompInst('Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements:L', 'A', '24', 10, '9', 'normal', 0.1016, 0.13716, 0, false, 4294967295, true)
+					Levels(0, 1)
+					$begin 'PropDisplayMap'
+						InstanceName(2, 1, 0, Text(0.101904799999999, 0.144176750000018, 0, 1, 5, false, 'Arial', 0, 'L2', false, false, ExtentRect(0, 0, 0, 0, 0.102825584283808, 0.144790606189224, 0.0018415685676171, 0.0018415685676171, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)))
+						L(3, 5, 0, Text(0.1063752, 0.13462, 0, 1, 5, false, 'Arial', 0, 'L=0.001H', false, false, ExtentRect(0, 0, 0, 0, 0.109904873087933, 0.135233856189206, 0.00705934617586556, 0.0018415685676171, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)))
+					$end 'PropDisplayMap'
+				$end 'SchCompDef'
+				$begin 'SchCompDef'
+					SchCompInst('Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements:R', 'A', '25', 11, '2', 'normal', 0.11938, 0.127, 0, false, 4294967295, true)
+					Levels(0, 1)
+					$begin 'PropDisplayMap'
+						InstanceName(2, 1, 0, Text(0.119684799999999, 0.134016750000018, 0, 1, 5, false, 'Arial', 0, 'R1', false, false, ExtentRect(0, 0, 0, 0, 0.120759048331109, 0.134630606189224, 0.00214849666221995, 0.0018415685676171, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)))
+						R(3, 5, 0, Text(0.12446, 0.1245616, 0, 1, 5, false, 'Arial', 0, 'R=3.2ohm', false, false, ExtentRect(0, 0, 0, 0, 0.128143137135234, 0.125175456189206, 0.00736627427046841, 0.0018415685676171, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)))
+					$end 'PropDisplayMap'
+				$end 'SchCompDef'
+				$begin 'SchCompDef'
+					SchCompInst('Simplorer Elements\\Basic Elements\\Circuit\\Semiconductors System Level:D', 'A', '26', 12, '7', 'normal', 0.10414, 0.11938, 3.14159265358979, false, 4294967295, true)
+					Levels(0, 1)
+					$begin 'PropDisplayMap'
+						InstanceName(2, 1, 0, Text(0.103073200000001, 0.111587138888878, 3.14159265358979, 1, 5, false, 'Arial', 0, 'D1', false, false, ExtentRect(0, 0, 0, 3.14159265358979, 0.101998951668891, 0.110973282699672, 0.00214849666221995, 0.0018415685676171, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)))
+					$end 'PropDisplayMap'
+				$end 'SchCompDef'
+				$begin 'SchCompDef'
+					SchCompInst('Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements:C', 'A', '27', 13, '3', 'normal', 0.0889, 0.12446, 1.5707963267949, false, 4294967295, true)
+					Levels(0, 1)
+					$begin 'PropDisplayMap'
+						InstanceName(2, 1, 0, Text(0.086122227777775, 0.125018799999999, 1.5707963267949, 1, 5, false, 'Arial', 0, 'C1', false, false, ExtentRect(0, 0, 0, 1.5707963267949, 0.0854060622237017, 0.126093048331109, 0.00214849666221995, 0.00214849666221995, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)))
+						C(3, 5, 0, Text(0.0859536, 0.1311656, 0, 1, 5, false, 'Arial', 0, 'C=5e-005farad', false, false, ExtentRect(0, 0, 0, 0, 0.0914783057028513, 0.131779456189206, 0.0110494114057026, 0.0018415685676171, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)))
+					$end 'PropDisplayMap'
+				$end 'SchCompDef'
+				$begin 'SchCompDef'
+					SchCompInst('Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements:C', 'A', '28', 14, '8', 'normal', 0.13716, 0.127, 0, false, 4294967295, true)
+					Levels(0, 1)
+					$begin 'PropDisplayMap'
+						InstanceName(2, 1, 0, Text(0.137718799999999, 0.134016750000018, 0, 1, 5, false, 'Arial', 0, 'C2', false, false, ExtentRect(0, 0, 0, 0, 0.138793048331109, 0.134630606189224, 0.00214849666221995, 0.0018415685676171, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)))
+						C(3, 5, 0, Text(0.1420368, 0.1263904, 0, 1, 5, false, 'Arial', 0, 'C=8e-005farad', false, false, ExtentRect(0, 0, 0, 0, 0.147561505702851, 0.127004256189206, 0.0110494114057026, 0.0018415685676171, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)))
+					$end 'PropDisplayMap'
+				$end 'SchCompDef'
+				$begin 'SchCompDef'
+					SchCompInst('Simplorer Elements\\Basic Elements\\Circuit\\Ideal Switches:S', 'A', '29', 15, '6', 'normal', 0.07366, 0.11684, 3.14159265358979, true, 4294967295, true)
+					Levels(0, 1, 2)
+					$begin 'PropDisplayMap'
+						InstanceName(2, 1, 0, Text(0.0736600008805398, 0.109047138888878, 3.14159265358979, 1, 5, false, 'Arial', 0, 'S1', false, false, ExtentRect(0, 0, 0, 3.14159265358979, 0.0725857525494298, 0.108433282699672, 0.00214849666221995, 0.0018415685676171, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)))
+					$end 'PropDisplayMap'
+				$end 'SchCompDef'
+				$begin 'SchCompDef'
+					SchCompInst('Simplorer Elements\\Basic Elements\\Tools\\Time Functions:PULSE', 'A', '30', 16, '1', 'normal', 0.05842, 0.127, 0, false, 4294967295, true)
+					Levels(0, 1)
+					$begin 'PropDisplayMap'
+						InstanceName(2, 1, 0, Text(0.058648600000001, 0.13179566111112, 0, 1, 5, false, 'Arial', 0, 'Square_wave1', false, false, ExtentRect(0, 0, 0, 0, 0.0641733057028523, 0.132409517300326, 0.0110494114057026, 0.0018415685676171, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)))
+					$end 'PropDisplayMap'
+				$end 'SchCompDef'
+				$begin 'SchCompDef'
+					SchCompInst('Simplorer Elements\\Basic Elements\\Circuit\\Sources:E', 'A', '31', 17, '5', 'normal', 0.04064, 0.12192, 0, false, 4294967295, true)
+					Levels(0, 1)
+					$begin 'PropDisplayMap'
+						InstanceName(2, 1, 0, Text(0.041655999999999, 0.131476750000018, 0, 1, 5, false, 'Arial', 0, 'E1', false, false, ExtentRect(0, 0, 0, 0, 0.0425767842838076, 0.132090606189224, 0.0018415685676171, 0.0018415685676171, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)))
+						EMF(3, 5, 0, Text(0.029464, 0.1284224, 0, 1, 5, false, 'Arial', 0, 'EMF=25V', false, false, ExtentRect(0, 0, 0, 0, 0.0328402090406314, 0.129036256189206, 0.00675241808126271, 0.0018415685676171, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)))
+					$end 'PropDisplayMap'
+				$end 'SchCompDef'
+				$begin 'SchCompDef'
+					SchCompInst('Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements:L', 'A', '32', 18, '4', 'normal', 0.07366, 0.13716, 0, false, 4294967295, true)
+					Levels(0, 1)
+					$begin 'PropDisplayMap'
+						InstanceName(2, 1, 0, Text(0.073964799999999, 0.144176750000018, 0, 1, 5, false, 'Arial', 0, 'L1', false, false, ExtentRect(0, 0, 0, 0, 0.0748855842838076, 0.144790606189224, 0.0018415685676171, 0.0018415685676171, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)))
+						L(3, 5, 0, Text(0.0785368, 0.1365504, 0, 1, 5, false, 'Arial', 0, 'L=0.001H', false, false, ExtentRect(0, 0, 0, 0, 0.0820664730879328, 0.137164256189206, 0.00705934617586556, 0.0018415685676171, 0, 0, 0), DisplayRect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)))
+					$end 'PropDisplayMap'
+				$end 'SchCompDef'
+				$begin 'PageNet'
+					NetName='out'
+					ID=24
+					WireSeg(0.10414, 0.14224, 0.12192, 0.14224, 59)
+					WireSeg(0.12192, 0.14224, 0.1397, 0.14224, 60)
+					WireSeg(0.10414, 0.1397, 0.10414, 0.14224, 61)
+					WireSeg(0.1397, 0.14224, 0.1397, 0.12954, 62)
+					WireSeg(0.12192, 0.14224, 0.12192, 0.12954, 63)
+					Color=0
+				$end 'PageNet'
+				$begin 'PageNet'
+					NetName='N0019'
+					ID=25
+					WireSeg(0.04318, 0.14224, 0.0762, 0.14224, 64)
+					WireSeg(0.04318, 0.127, 0.04318, 0.14224, 65)
+					WireSeg(0.0762, 0.14224, 0.0762, 0.1397, 66)
+					Color=0
+				$end 'PageNet'
+				$begin 'PageNet'
+					NetName='0'
+					ID=27
+					Global('0', 19)
+					WireSeg(0.04318, 0.10668, 0.0762, 0.10668, 67)
+					WireSeg(0.0762, 0.10668, 0.0889, 0.10668, 68)
+					WireSeg(0.0889, 0.10668, 0.10414, 0.10668, 69)
+					WireSeg(0.10414, 0.10668, 0.12192, 0.10668, 70)
+					WireSeg(0.12192, 0.10668, 0.1397, 0.10668, 71)
+					WireSeg(0.10414, 0.1143, 0.1016, 0.1143, 72)
+					WireSeg(0.04318, 0.11684, 0.04318, 0.10668, 73)
+					WireSeg(0.12192, 0.10668, 0.12192, 0.12192, 74)
+					WireSeg(0.1397, 0.10668, 0.1397, 0.12192, 75)
+					WireSeg(0.0889, 0.10668, 0.0889, 0.1016, 76)
+					WireSeg(0.0762, 0.10668, 0.0762, 0.11176, 77)
+					WireSeg(0.10414, 0.10668, 0.10414, 0.1143, 78)
+					Color=0
+				$end 'PageNet'
+				$begin 'PageNet'
+					NetName='N0021'
+					ID=28
+					WireSeg(0.10414, 0.127, 0.09398, 0.127, 80)
+					WireSeg(0.10414, 0.12446, 0.1016, 0.12446, 81)
+					WireSeg(0.10414, 0.13208, 0.10414, 0.127, 82)
+					WireSeg(0.10414, 0.127, 0.10414, 0.12446, 83)
+					Color=0
+				$end 'PageNet'
+				$begin 'PageNet'
+					NetName='N0024'
+					ID=29
+					WireSeg(0.0762, 0.127, 0.08636, 0.127, 84)
+					WireSeg(0.0762, 0.13208, 0.0762, 0.127, 85)
+					WireSeg(0.0762, 0.127, 0.0762, 0.12192, 86)
+					Color=0
+				$end 'PageNet'
+				$begin 'Graphics'
+					ID=1
+					Color=4294967295
+					Text(0.0963676, 0.0915416, 0, 4, 12.8, false, 'Arial', 8388608, 'output of current through L1 and voltage over C1', true, true, ExtentRect(0, 0, 8388608, 0, 0.0963676, 0.0929227764257128, 0.0801082326913439, 0.00460392141904275, 8388608, 0, 0), DisplayRect(0, 1, 12973050, 0, 0.0963676, 0.091934998647926, 0.09146141916444, 0.00770836586346913, 255, 0, 0))
+				$end 'Graphics'
+				$begin 'Graphics'
+					ID=2
+					Color=4294967295
+					Text(0.023622, 0.140648266666667, 0, 4, 12.8, false, 'Arial', 8388608, 'circuit', true, true, ExtentRect(0, 0, 8388608, 0, 0.023622, 0.14202944309238, 0.00982169902729121, 0.00460392141904275, 8388608, 0, 0), DisplayRect(0, 1, 12973050, 0, 0.023622, 0.141109398647926, 0.0147441454040628, 0.00811476586346912, 255, 0, 0))
+				$end 'Graphics'
+				$begin 'Graphics'
+					ID=3
+					Color=4294967295
+					Text(0.0958596, 0.167910933333333, 0, 4, 16.8, false, 'Arial', 16777215, 'Cuk converter', true, true, ExtentRect(0, 0, 16777215, 0, 0.0958596, 0.169599037853649, 0.0313066656494907, 0.00583163379745415, 16777215, 0, 0), DisplayRect(0.0001016, 1, 9117184, 0, 0.0958596, 0.167939571186972, 0.17858396420009, 0.00772816713076378, 9117184, 0, 0))
+				$end 'Graphics'
+				$begin 'Graphics'
+					ID=4
+					Color=4294967295
+					Text(0.08255, 0.153483733333333, 0, 4, 12.8, false, 'Arial', 0, 'Example of a cuk converter', true, true, ExtentRect(0, 0, 0, 0, 0.08255, 0.154864909759046, 0.0448115018120161, 0.00460392141904275, 0, 0, 0), DisplayRect(0.0001016, 1, 15724527, 0, 0.08255, 0.153860198647926, 0.0518385897345338, 0.00760676586346911, 0, 0, 0))
+				$end 'Graphics'
+				$begin 'SchPlot'
+					ReportIDs(1, 1, 2, 1, 'Inductor Current and Capacitor Voltage')
+					Rect(0, 0, 0, 0, 0.095504, 0.0604012, 0.1184656, 0.0521208, 0, 0, 0)
+					DoesOwnReport=true
+					$begin '1'
+						$begin 'WrapperView'
+							ID(22)
+						$end 'WrapperView'
+						$begin 'WrapperDoc'
+							HiddenDrawings(21)
+							$begin 'DispType'
+								PlotType=1
+								$begin 'CurveMed'
+									$begin 'MedCamera'
+										$begin 'svrc'
+											svid=6
+											view(22, cam(XYCam(false, true, true, true, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0)))
+										$end 'svrc'
+									$end 'MedCamera'
+								$end 'CurveMed'
+							$end 'DispType'
+						$end 'WrapperDoc'
+					$end '1'
+				$end 'SchPlot'
+				$begin 'Properties'
+					TextProp('Title', 'SD', '', '<Page Title>')
+					TextProp('Author', 'SD', '', '')
+				$end 'Properties'
+			$end 'Page'
+			GridSetup('1000mil', '100mil', '100mil', 12632256, 16761024, false, true, 16777215, Origin(x='0mm', y='0mm'), PageSize(x='0mm', y='0mm'), Margins(x='0mm', y='0mm'), 0, 0, 0)
+			hasWindowBeenOpened=false
+			NextUniqueID=0
+			MoveBackwards=false
+		$end 'Schematic'
+		$begin 'ConfiguredLibs'
+			$begin 'SysLibraries'
+				Materials='Simplorer Elements;Materials'
+				Scripts='Simplorer Elements;Scripts'
+				Symbols='Simplorer Elements;Symbols;Simplorer Elements\\Basic Elements\\Circuit\\Sources;Simplorer Elements\\Basic Elements\\Tools\\Time Functions;Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements;Simplorer Elements\\Basic Elements\\Circuit\\Semiconductors System Level;Simplorer Elements\\Basic Elements\\Circuit\\Ideal Switches'
+				Models='Simplorer Elements'
+				Packages='Simplorer Elements'
+				Components='Simplorer Elements'
+			$end 'SysLibraries'
+		$end 'ConfiguredLibs'
+		$begin 'SimSetups'
+			$begin 'SimSetup'
+				DataBlockID=8
+				SimSetupID=1
+				OptionName='Options'
+				AnalysisEnabled=1
+				Name='TR'
+				TransientData('0.02s', '1e-007s', '1e-005s', false, '0')
+				EnableContSolve=false
+			$end 'SimSetup'
+			$begin 'SimSetup'
+				DataBlockID=7
+				SimSetupID=-1
+				OptionName=''
+				AnalysisEnabled=1
+				Name='Options'
+				StopForUserInput=false
+				$begin 'ModifiedOptions'
+					ts_maxiter=20
+					ts_iemaxerror='0.001'
+					ts_vemaxerror='0.001'
+					ac_errormax='1E-006'
+					dc_maxerror='0.001'
+					gen_stepno=2
+					gen_stepwidth=1e-005
+				$end 'ModifiedOptions'
+			$end 'SimSetup'
+		$end 'SimSetups'
+		$begin 'OutputQuantities'
+			$begin 'Quantity'
+				NodeType='Net'
+				CompID=''
+				CompName='out'
+				QuantityName='V'
+				Selected=true
+				UnitType='Voltage'
+				NetlistFUT=''
+				DataType='Real'
+				TypeInfo('V', 0, 'V', IsUnconstrained=false)
+			$end 'Quantity'
+			$begin 'Quantity'
+				NodeType='CompInst'
+				CompID='5'
+				CompName='E1'
+				QuantityName='V'
+				Selected=true
+				UnitType='Voltage'
+				NetlistFUT='V'
+				DataType='Real'
+				TypeInfo('V', 0, 'V', IsUnconstrained=false)
+			$end 'Quantity'
+			$begin 'Quantity'
+				NodeType='CompInst'
+				CompID='3'
+				CompName='C1'
+				QuantityName='V'
+				Selected=true
+				UnitType='Voltage'
+				NetlistFUT='V'
+				DataType='Real'
+				TypeInfo('V', 0, 'V', IsUnconstrained=false)
+			$end 'Quantity'
+			$begin 'Quantity'
+				NodeType='CompInst'
+				CompID='8'
+				CompName='C2'
+				QuantityName='V'
+				Selected=true
+				UnitType='Voltage'
+				NetlistFUT='V'
+				DataType='Real'
+				TypeInfo('V', 0, 'V', IsUnconstrained=false)
+			$end 'Quantity'
+			$begin 'Quantity'
+				NodeType='CompInst'
+				CompID='4'
+				CompName='L1'
+				QuantityName='I'
+				Selected=true
+				UnitType='Current'
+				NetlistFUT='A'
+				DataType='Real'
+				TypeInfo('I', 0, 'A', IsUnconstrained=false)
+			$end 'Quantity'
+			$begin 'Quantity'
+				NodeType='CompInst'
+				CompID='9'
+				CompName='L2'
+				QuantityName='I'
+				Selected=true
+				UnitType='Current'
+				NetlistFUT='A'
+				DataType='Real'
+				TypeInfo('I', 0, 'A', IsUnconstrained=false)
+			$end 'Quantity'
+			$begin 'Quantity'
+				NodeType='CompInst'
+				CompID='6'
+				CompName='S1'
+				QuantityName='V'
+				Selected=true
+				UnitType='Voltage'
+				NetlistFUT='V'
+				DataType='Real'
+				TypeInfo('V', 0, 'V', IsUnconstrained=false)
+			$end 'Quantity'
+		$end 'OutputQuantities'
+		CurrentComboSetup='TR'
+		$begin 'OutputVariable'
+			NextUniqueID=0
+			MoveBackwards=false
+		$end 'OutputVariable'
+		$begin 'Optimetrics'
+			$begin 'OptimetricsSetups'
+				NextUniqueID=0
+				MoveBackwards=false
+			$end 'OptimetricsSetups'
+		$end 'Optimetrics'
+		$begin 'SolutionManager'
+			$begin 'SimDataExtractors'
+				$begin 'SimSetup'
+					TypeName='Transient'
+					ID=1
+					Name='TR'
+					TaskName=''
+					MaxRunNumber=1
+					$begin 'Solution'
+						ID=0
+						Name='TR'
+						$begin 'SimDataExtractor'
+							$begin 'QuantityIDs'
+								NextUniqueID=7
+								MoveBackwards=false
+								IDMap(0, 'C1.V', 1, 'L1.I', 2, 'S1.V', 3, 'out.V', 4, 'E1.V', 5, 'C2.V', 6, 'L2.I')
+							$end 'QuantityIDs'
+						$end 'SimDataExtractor'
+					$end 'Solution'
+				$end 'SimSetup'
+				$begin 'Version ID Map'
+					V=0
+					$begin 'Setup'
+						N='TR'
+						V=0
+						Soln(N='TR', V=0)
+					$end 'Setup'
+				$end 'Version ID Map'
+			$end 'SimDataExtractors'
+		$end 'SolutionManager'
+		$begin 'UserDefinedSolutionMgr'
+			NextUniqueID=1000000
+			MoveBackwards=false
+		$end 'UserDefinedSolutionMgr'
+		$begin 'DatasetSolutionMgr'
+			NextUniqueID=2000000
+			MoveBackwards=false
+		$end 'DatasetSolutionMgr'
+		Notes=$begin_cdata$		$end_cdata$
+		$begin 'AnimationSetups'
+		$end 'AnimationSetups'
+		CacheHeaderFile='HDR2C3D113001379617682158.tmp'
+	$end 'SimplorerCircuit'
+	$begin 'DataInstances'
+		DesignEditor='TopLevel'
+		Refdes('0', 'U1')
+		$begin 'CompInstances'
+			$begin 'Compinst'
+				ID='0'
+				Status='Status'
+				CompName='cuk'
+				GatesInUse()
+				$begin 'Properties'
+					TextProp('ID', 'SRID', '', '0')
+				$end 'Properties'
+			$end 'Compinst'
+		$end 'CompInstances'
+		$begin 'Instance'
+			DesignEditor='cuk'
+			ID='0'
+			Refdes('6', 'S1')
+			Refdes('5', 'E1')
+			Refdes('1', 'PULSE1')
+			Refdes('8', 'C2')
+			Refdes('4', 'L1')
+			Refdes('9', 'L2')
+			Refdes('3', 'C1')
+			Refdes('7', 'D1')
+			Refdes('2', 'R1')
+			$begin 'SimplorerCircuit'
+				DesignInstanceID=1
+				$begin 'WindowPosition'
+					$begin 'EditorWindow'
+						Circuit(Schematic(View(WindowPos(3, -1, -1, -8, -30, 0, 0, 1169, 658), Extent(-0.507, -0.507, 1.015, 1.015, 4724.4094488, 4724.4094488, -0.0809309824912418, 0.202196910730469, 0.353581164982483, 0.196740908640427, 0.689629494300284), Pages(1, 1, -0.0877902912621359, -0.0254, 0.0877902912621359, 0.0254))))
+					$end 'EditorWindow'
+				$end 'WindowPosition'
+				$begin 'ReportSetup'
+					$begin 'ReportManager'
+						$begin 'Reports'
+							$begin 'Inductor Current and Capacitor Voltage'
+								ReportID=2
+								ReportName='Inductor Current and Capacitor Voltage'
+								$begin 'TraceDef'
+									TraceDefinitionType='TraceDefinition'
+									$begin 'DesignSolnDefn'
+										$begin 'DESIGN_SOLUTION_SIM_VALUE_CONTEXT'
+											DesignID=0
+											SolutionID=0
+											$begin 'REPORT_TYPE_SIM_VALUE_CONTEXT'
+												ReportType=0
+												SimValueContext(1, 0, 2, 0, false, false, -1, 1, 0, 1, 1, '', 0, 0)
+											$end 'REPORT_TYPE_SIM_VALUE_CONTEXT'
+										$end 'DESIGN_SOLUTION_SIM_VALUE_CONTEXT'
+									$end 'DesignSolnDefn'
+									ID=0
+									VersionID=4
+									Name='C1.V'
+									TieNameToExpr=true
+									$begin 'Components'
+										$begin 'TraceComponentDefinition'
+											Expr='Time'
+										$end 'TraceComponentDefinition'
+										$begin 'TraceComponentDefinition'
+											Expr='C1.V'
+										$end 'TraceComponentDefinition'
+									$end 'Components'
+									$begin 'ExtendedTraceInfo'
+										NumPoints=0
+										TraceType=0
+										Offset=0
+										XLabel=''
+										SamplingPeriod='0'
+										SamplingPeriodOffset='0'
+										AutoDelay=false
+										DelayValue='0ps'
+										AutoCompCrossAmplitude=true
+										CrossingAmplitude='0mV'
+										YAxis=1
+										AutoCompEyeMeasurementPoint=true
+										EyeMeasurementPoint='0ps'
+									$end 'ExtendedTraceInfo'
+									$begin 'TraceFamiliesDisplayDefinition'
+										DisplayFamiliesType='DisplayAll'
+									$end 'TraceFamiliesDisplayDefinition'
+									$begin 'PointsetDefinition'
+										$begin 'SubsweepDefParamsContainer'
+											$begin '0'
+												SubsweepType='Special'
+												SweepVariableName='Time'
+												HasMinMaxLimit=false
+											$end '0'
+										$end 'SubsweepDefParamsContainer'
+										FamilyBlock()
+									$end 'PointsetDefinition'
+									DesignInstanceID=1
+								$end 'TraceDef'
+								$begin 'TraceDef'
+									TraceDefinitionType='TraceDefinition'
+									$begin 'DesignSolnDefn'
+										$begin 'DESIGN_SOLUTION_SIM_VALUE_CONTEXT'
+											DesignID=0
+											SolutionID=0
+											$begin 'REPORT_TYPE_SIM_VALUE_CONTEXT'
+												ReportType=0
+												SimValueContext(1, 0, 2, 0, false, false, -1, 1, 0, 1, 1, '', 0, 0)
+											$end 'REPORT_TYPE_SIM_VALUE_CONTEXT'
+										$end 'DESIGN_SOLUTION_SIM_VALUE_CONTEXT'
+									$end 'DesignSolnDefn'
+									ID=1
+									VersionID=5
+									Name='L1.I'
+									TieNameToExpr=true
+									$begin 'Components'
+										$begin 'TraceComponentDefinition'
+											Expr='Time'
+										$end 'TraceComponentDefinition'
+										$begin 'TraceComponentDefinition'
+											Expr='L1.I'
+										$end 'TraceComponentDefinition'
+									$end 'Components'
+									$begin 'ExtendedTraceInfo'
+										NumPoints=0
+										TraceType=0
+										Offset=0
+										XLabel=''
+										SamplingPeriod='0'
+										SamplingPeriodOffset='0'
+										AutoDelay=false
+										DelayValue='0ps'
+										AutoCompCrossAmplitude=true
+										CrossingAmplitude='0mV'
+										YAxis=1
+										AutoCompEyeMeasurementPoint=true
+										EyeMeasurementPoint='0ps'
+									$end 'ExtendedTraceInfo'
+									$begin 'TraceFamiliesDisplayDefinition'
+										DisplayFamiliesType='DisplayAll'
+									$end 'TraceFamiliesDisplayDefinition'
+									$begin 'PointsetDefinition'
+										$begin 'SubsweepDefParamsContainer'
+											$begin '0'
+												SubsweepType='Special'
+												SweepVariableName='Time'
+												HasMinMaxLimit=false
+											$end '0'
+										$end 'SubsweepDefParamsContainer'
+										FamilyBlock()
+									$end 'PointsetDefinition'
+									DesignInstanceID=1
+								$end 'TraceDef'
+							$end 'Inductor Current and Capacitor Voltage'
+						$end 'Reports'
+						NextUniqueID=3
+						MoveBackwards=false
+						$begin 'NextVersID'
+							NextUniqueID=6
+							MoveBackwards=false
+						$end 'NextVersID'
+					$end 'ReportManager'
+					$begin 'Reports'
+						$begin 'Inductor Current and Capacitor Voltage'
+							ReportID=2
+							$begin 'Report2D'
+								name='Inductor Current and Capacitor Voltage'
+								ReportID=2
+								ReportType=0
+								DisplayType=1
+								Title=''
+								Domain=''
+								$begin 'Graph2DsV2'
+									$begin 'Graph2D'
+										TraceDefID=0
+										Type='Continuous'
+										Axis='Y1'
+									$end 'Graph2D'
+									$begin 'Graph2D'
+										TraceDefID=1
+										Type='Continuous'
+										Axis='Y1'
+									$end 'Graph2D'
+								$end 'Graph2DsV2'
+								$begin 'PlotDisplayDataManager'
+									NextUniqueID=100
+									MoveBackwards=false
+									$begin 'PlotHeaderDataSource'
+										CompanyName='Ansoft LLC'
+										ShowDesignName=true
+										ProjectFileName=''
+									$end 'PlotHeaderDataSource'
+									StockNameIDMap(AxisX=1, AxisY1=2, AxisY2=10, AxisY3=11, AxisY4=12, Grid=13, Header=0, Legend=7, XYHorizScroller=9)
+									$begin 'SourceList'
+									$end 'SourceList'
+									$begin 'DocAttributes'
+										$begin 'PlotAttributeStoreMap'
+											$begin 'MainMapItem'
+												$begin 'SubMapItem'
+													DataSourceID=13
+													$begin 'CartesianGridDescAttribute'
+														ShowXMinor=true
+														ShowYMinor=true
+														ShowXMajor=true
+														ShowYMajor=true
+														ShowBorder=true
+													$end 'CartesianGridDescAttribute'
+												$end 'SubMapItem'
+											$end 'MainMapItem'
+											$begin 'MainMapItem'
+												$begin 'SubMapItem'
+													DataSourceID=3
+													$begin 'CurveCartesianAttribute'
+														YAxis='Y1'
+													$end 'CurveCartesianAttribute'
+												$end 'SubMapItem'
+												$begin 'SubMapItem'
+													DataSourceID=4
+													$begin 'CurveCartesianAttribute'
+														YAxis='Y1'
+													$end 'CurveCartesianAttribute'
+												$end 'SubMapItem'
+											$end 'MainMapItem'
+											$begin 'MainMapItem'
+												$begin 'SubMapItem'
+													DataSourceID=3
+													$begin 'CurveRenderAttribute'
+														$begin 'LineRenderAttribute'
+															LineStyle='Solid'
+															LineWidth=1
+															LineColor(R=255, G=0, B=0)
+														$end 'LineRenderAttribute'
+														TraceType='Continuous'
+														SymbolType='HollowBox'
+														SymbolColor(R=255, G=0, B=0)
+														ShowSymbols=false
+														SymbolFrequency=1
+														ShowArrows=false
+													$end 'CurveRenderAttribute'
+												$end 'SubMapItem'
+												$begin 'SubMapItem'
+													DataSourceID=4
+													$begin 'CurveRenderAttribute'
+														$begin 'LineRenderAttribute'
+															LineStyle='Solid'
+															LineWidth=1
+															LineColor(R=0, G=0, B=255)
+														$end 'LineRenderAttribute'
+														TraceType='Continuous'
+														SymbolType='HollowBox'
+														SymbolColor(R=0, G=0, B=255)
+														ShowSymbols=false
+														SymbolFrequency=1
+														ShowArrows=false
+													$end 'CurveRenderAttribute'
+												$end 'SubMapItem'
+											$end 'MainMapItem'
+											$begin 'MainMapItem'
+												$begin 'SubMapItem'
+													DataSourceID=0
+													$begin 'HeaderRenderAttribute'
+														$begin 'TitleFont'
+															$begin 'FontAttribute'
+																$begin 'Font'
+																	Height=-19
+																	Width=0
+																	Escapement=0
+																	Orientation=0
+																	Weight=400
+																	Italic=0
+																	Underline=0
+																	StrikeOut=0
+																	CharSet=0
+																	OutPrecision=7
+																	ClipPrecision=48
+																	Quality=6
+																	PitchAndFamily=0
+																	FaceName='Arial'
+																$end 'Font'
+																Color(R=0, G=0, B=0)
+															$end 'FontAttribute'
+														$end 'TitleFont'
+														$begin 'SubtitleFont'
+															$begin 'FontAttribute'
+																$begin 'Font'
+																	Height=-13
+																	Width=0
+																	Escapement=0
+																	Orientation=0
+																	Weight=400
+																	Italic=0
+																	Underline=0
+																	StrikeOut=0
+																	CharSet=0
+																	OutPrecision=7
+																	ClipPrecision=48
+																	Quality=6
+																	PitchAndFamily=0
+																	FaceName='Arial'
+																$end 'Font'
+																Color(R=0, G=0, B=0)
+															$end 'FontAttribute'
+														$end 'SubtitleFont'
+													$end 'HeaderRenderAttribute'
+												$end 'SubMapItem'
+											$end 'MainMapItem'
+											$begin 'MainMapItem'
+												$begin 'SubMapItem'
+													DataSourceID=7
+													$begin 'LegendRenderAttribute'
+														$begin 'LegendTableAttrib'
+															$begin 'TableRenderAttribute'
+																$begin 'TableFontAttrib'
+																	$begin 'FontAttribute'
+																		$begin 'Font'
+																			Height=-13
+																			Width=0
+																			Escapement=0
+																			Orientation=0
+																			Weight=400
+																			Italic=0
+																			Underline=0
+																			StrikeOut=0
+																			CharSet=0
+																			OutPrecision=7
+																			ClipPrecision=48
+																			Quality=6
+																			PitchAndFamily=0
+																			FaceName='Arial'
+																		$end 'Font'
+																		Color(R=0, G=0, B=0)
+																	$end 'FontAttribute'
+																$end 'TableFontAttrib'
+																$begin 'TableTitleFontAttrib'
+																	$begin 'FontAttribute'
+																		$begin 'Font'
+																			Height=-11
+																			Width=0
+																			Escapement=0
+																			Orientation=0
+																			Weight=400
+																			Italic=0
+																			Underline=0
+																			StrikeOut=0
+																			CharSet=0
+																			OutPrecision=7
+																			ClipPrecision=48
+																			Quality=6
+																			PitchAndFamily=0
+																			FaceName='Arial'
+																		$end 'Font'
+																		Color(R=0, G=0, B=0)
+																	$end 'FontAttribute'
+																$end 'TableTitleFontAttrib'
+																TableBorderLineWidth=1
+																TableBorderLineColor=0
+																TableGridLineWidth=1
+																TableGridLineColor=12632256
+																TableBackgroundColor=16777215
+																TableHeaderBackgroundColor=14408667
+															$end 'TableRenderAttribute'
+														$end 'LegendTableAttrib'
+														ShowTraceName=true
+														ShowSolutionName=true
+														ShowVariationKey=true
+														ShowFullFilePathInVariationKey=true
+														DockMode='None'
+													$end 'LegendRenderAttribute'
+												$end 'SubMapItem'
+											$end 'MainMapItem'
+											$begin 'MainMapItem'
+												$begin 'SubMapItem'
+													DataSourceID=1
+													$begin 'LineAxisRenderAttribute'
+														DecimalFieldWidth=4
+														DecimalFieldPrecision=2
+														ManualTitle='X-Axis'
+														AxisColor(R=0, G=0, B=0)
+														MinScale=0
+														MaxScale=1
+														TickSpacing=1
+														ManualUnits=true
+														Units=''
+														AxisScale='Linear'
+														NumberFormat='Decimal'
+														$begin 'TextFont'
+															$begin 'FontAttribute'
+																$begin 'Font'
+																	Height=-15
+																	Width=0
+																	Escapement=0
+																	Orientation=0
+																	Weight=400
+																	Italic=0
+																	Underline=0
+																	StrikeOut=0
+																	CharSet=0
+																	OutPrecision=7
+																	ClipPrecision=48
+																	Quality=6
+																	PitchAndFamily=0
+																	FaceName='Arial'
+																$end 'Font'
+																Color(R=0, G=0, B=0)
+															$end 'FontAttribute'
+														$end 'TextFont'
+														InfMapMode=false
+														InfMapValue=1.79769313486232e+306
+														AutoRangeMin=true
+														AutoRangeMax=true
+														AutoSpacing=true
+														kNumMinorDivisions=5
+														ShowAxisTitle=true
+														ShowAxisUnits=true
+														vwm='FullWnd'
+														viewWndWd=#nan
+														ActivateMargins=true
+														MarginPercent=0
+													$end 'LineAxisRenderAttribute'
+												$end 'SubMapItem'
+												$begin 'SubMapItem'
+													DataSourceID=2
+													$begin 'LineAxisRenderAttribute'
+														DecimalFieldWidth=4
+														DecimalFieldPrecision=2
+														ManualTitle='Default'
+														AxisColor(R=0, G=0, B=0)
+														MinScale=0
+														MaxScale=1
+														TickSpacing=1
+														ManualUnits=true
+														Units=''
+														AxisScale='Linear'
+														NumberFormat='Decimal'
+														$begin 'TextFont'
+															$begin 'FontAttribute'
+																$begin 'Font'
+																	Height=-15
+																	Width=0
+																	Escapement=0
+																	Orientation=0
+																	Weight=400
+																	Italic=0
+																	Underline=0
+																	StrikeOut=0
+																	CharSet=0
+																	OutPrecision=7
+																	ClipPrecision=48
+																	Quality=6
+																	PitchAndFamily=0
+																	FaceName='Arial'
+																$end 'Font'
+																Color(R=0, G=0, B=0)
+															$end 'FontAttribute'
+														$end 'TextFont'
+														InfMapMode=false
+														InfMapValue=1.79769313486232e+306
+														AutoRangeMin=true
+														AutoRangeMax=true
+														AutoSpacing=true
+														kNumMinorDivisions=5
+														ShowAxisTitle=true
+														ShowAxisUnits=true
+														vwm='FullWnd'
+														viewWndWd=#nan
+														ActivateMargins=true
+														MarginPercent=0
+													$end 'LineAxisRenderAttribute'
+												$end 'SubMapItem'
+												$begin 'SubMapItem'
+													DataSourceID=10
+													$begin 'LineAxisRenderAttribute'
+														DecimalFieldWidth=3
+														DecimalFieldPrecision=2
+														ManualTitle=''
+														AxisColor(R=0, G=0, B=0)
+														MinScale=0
+														MaxScale=1
+														TickSpacing=1
+														ManualUnits=false
+														Units='mm'
+														AxisScale='Linear'
+														NumberFormat='Auto'
+														$begin 'TextFont'
+															$begin 'FontAttribute'
+																$begin 'Font'
+																	Height=-15
+																	Width=0
+																	Escapement=0
+																	Orientation=0
+																	Weight=400
+																	Italic=0
+																	Underline=0
+																	StrikeOut=0
+																	CharSet=0
+																	OutPrecision=7
+																	ClipPrecision=48
+																	Quality=6
+																	PitchAndFamily=0
+																	FaceName='Arial'
+																$end 'Font'
+																Color(R=0, G=0, B=0)
+															$end 'FontAttribute'
+														$end 'TextFont'
+														InfMapMode=false
+														InfMapValue=1.79769313486232e+306
+														AutoRangeMin=true
+														AutoRangeMax=true
+														AutoSpacing=true
+														kNumMinorDivisions=5
+														ShowAxisTitle=true
+														ShowAxisUnits=true
+														vwm='FullWnd'
+														viewWndWd=#nan
+														ActivateMargins=true
+														MarginPercent=0
+													$end 'LineAxisRenderAttribute'
+												$end 'SubMapItem'
+												$begin 'SubMapItem'
+													DataSourceID=11
+													$begin 'LineAxisRenderAttribute'
+														DecimalFieldWidth=3
+														DecimalFieldPrecision=2
+														ManualTitle=''
+														AxisColor(R=0, G=0, B=0)
+														MinScale=0
+														MaxScale=1
+														TickSpacing=1
+														ManualUnits=false
+														Units='mm'
+														AxisScale='Linear'
+														NumberFormat='Auto'
+														$begin 'TextFont'
+															$begin 'FontAttribute'
+																$begin 'Font'
+																	Height=-15
+																	Width=0
+																	Escapement=0
+																	Orientation=0
+																	Weight=400
+																	Italic=0
+																	Underline=0
+																	StrikeOut=0
+																	CharSet=0
+																	OutPrecision=7
+																	ClipPrecision=48
+																	Quality=6
+																	PitchAndFamily=0
+																	FaceName='Arial'
+																$end 'Font'
+																Color(R=0, G=0, B=0)
+															$end 'FontAttribute'
+														$end 'TextFont'
+														InfMapMode=false
+														InfMapValue=1.79769313486232e+306
+														AutoRangeMin=true
+														AutoRangeMax=true
+														AutoSpacing=true
+														kNumMinorDivisions=5
+														ShowAxisTitle=true
+														ShowAxisUnits=true
+														vwm='FullWnd'
+														viewWndWd=#nan
+														ActivateMargins=true
+														MarginPercent=0
+													$end 'LineAxisRenderAttribute'
+												$end 'SubMapItem'
+												$begin 'SubMapItem'
+													DataSourceID=12
+													$begin 'LineAxisRenderAttribute'
+														DecimalFieldWidth=3
+														DecimalFieldPrecision=2
+														ManualTitle=''
+														AxisColor(R=0, G=0, B=0)
+														MinScale=0
+														MaxScale=1
+														TickSpacing=1
+														ManualUnits=false
+														Units='mm'
+														AxisScale='Linear'
+														NumberFormat='Auto'
+														$begin 'TextFont'
+															$begin 'FontAttribute'
+																$begin 'Font'
+																	Height=-15
+																	Width=0
+																	Escapement=0
+																	Orientation=0
+																	Weight=400
+																	Italic=0
+																	Underline=0
+																	StrikeOut=0
+																	CharSet=0
+																	OutPrecision=7
+																	ClipPrecision=48
+																	Quality=6
+																	PitchAndFamily=0
+																	FaceName='Arial'
+																$end 'Font'
+																Color(R=0, G=0, B=0)
+															$end 'FontAttribute'
+														$end 'TextFont'
+														InfMapMode=false
+														InfMapValue=1.79769313486232e+306
+														AutoRangeMin=true
+														AutoRangeMax=true
+														AutoSpacing=true
+														kNumMinorDivisions=5
+														ShowAxisTitle=true
+														ShowAxisUnits=true
+														vwm='FullWnd'
+														viewWndWd=#nan
+														ActivateMargins=true
+														MarginPercent=0
+													$end 'LineAxisRenderAttribute'
+												$end 'SubMapItem'
+											$end 'MainMapItem'
+											$begin 'MainMapItem'
+												$begin 'SubMapItem'
+													DataSourceID=-1
+													$begin 'PlotRenderAttribute'
+														BackgroundColor(R=255, G=255, B=255)
+														SelectionColor(R=255, G=0, B=128)
+														PlotAreaColor(R=255, G=255, B=255)
+														SelectionThicknessEmphasis=1
+														CurveSelEmphasisThickness=2
+														CurveSelDeEmphasisThickness=1
+														FieldWidth=4
+														Precision=4
+														UseScientificNotation=false
+														DataPointSnapPixels=40
+													$end 'PlotRenderAttribute'
+												$end 'SubMapItem'
+											$end 'MainMapItem'
+										$end 'PlotAttributeStoreMap'
+									$end 'DocAttributes'
+									$begin 'DocDefaultAttributes'
+										$begin 'PlotAttributeStoreMap'
+										$end 'PlotAttributeStoreMap'
+									$end 'DocDefaultAttributes'
+									$begin 'PerViewPlotAttributeStoreMap'
+										$begin 'MapItem'
+											ItemID=22
+											$begin 'PlotAttributeStoreMap'
+												$begin 'MainMapItem'
+													$begin 'SubMapItem'
+														DataSourceID=6
+														$begin 'BasicLayoutAttribute'
+															$begin 'LayoutRect'
+																Top=714
+																Left=218
+																Bottom=9770
+																Right=9302
+															$end 'LayoutRect'
+														$end 'BasicLayoutAttribute'
+													$end 'SubMapItem'
+													$begin 'SubMapItem'
+														DataSourceID=14
+														$begin 'BasicLayoutAttribute'
+															$begin 'LayoutRect'
+																Top=714
+																Left=218
+																Bottom=9770
+																Right=9302
+															$end 'LayoutRect'
+														$end 'BasicLayoutAttribute'
+													$end 'SubMapItem'
+												$end 'MainMapItem'
+												$begin 'MainMapItem'
+													$begin 'SubMapItem'
+														DataSourceID=17
+														$begin 'CartesianAxisLayoutAttribute'
+															$begin 'AxisRect'
+																Top=75
+																Left=9302
+																Bottom=9925
+																Right=9925
+															$end 'AxisRect'
+															$begin 'GridRect'
+																Top=714
+																Left=218
+																Bottom=9770
+																Right=9302
+															$end 'GridRect'
+														$end 'CartesianAxisLayoutAttribute'
+													$end 'SubMapItem'
+													$begin 'SubMapItem'
+														DataSourceID=18
+														$begin 'CartesianAxisLayoutAttribute'
+															$begin 'AxisRect'
+																Top=75
+																Left=100
+																Bottom=713
+																Right=9302
+															$end 'AxisRect'
+															$begin 'GridRect'
+																Top=714
+																Left=218
+																Bottom=9770
+																Right=9302
+															$end 'GridRect'
+														$end 'CartesianAxisLayoutAttribute'
+													$end 'SubMapItem'
+												$end 'MainMapItem'
+												$begin 'MainMapItem'
+													$begin 'SubMapItem'
+														DataSourceID=6
+														$begin 'CartesianCurveGroupLayoutAttribute'
+															X_spc=0.1
+															X_fwd=3
+															X_fpr=2
+															Y1_spc=0.2
+															Y1_fwd=3
+															Y1_fpr=2
+														$end 'CartesianCurveGroupLayoutAttribute'
+													$end 'SubMapItem'
+												$end 'MainMapItem'
+												$begin 'MainMapItem'
+													$begin 'SubMapItem'
+														DataSourceID=8
+														$begin 'DockableOverlayLayoutAttribute'
+															$begin 'Dock_0'
+																$begin 'OverlayLayoutAttribute'
+																	$begin 'BoundingRect'
+																		Top=4850
+																		Left=175
+																		Bottom=9850
+																		Right=7675
+																	$end 'BoundingRect'
+																	ModifySize=false
+																	ModifyPosition=false
+																$end 'OverlayLayoutAttribute'
+															$end 'Dock_0'
+															$begin 'Dock_1'
+																$begin 'OverlayLayoutAttribute'
+																	$begin 'BoundingRect'
+																		Top=5000
+																		Left=0
+																		Bottom=10000
+																		Right=10000
+																	$end 'BoundingRect'
+																	ModifySize=false
+																	ModifyPosition=false
+																$end 'OverlayLayoutAttribute'
+															$end 'Dock_1'
+															$begin 'Dock_2'
+																$begin 'OverlayLayoutAttribute'
+																	$begin 'BoundingRect'
+																		Top=0
+																		Left=0
+																		Bottom=5000
+																		Right=10000
+																	$end 'BoundingRect'
+																	ModifySize=false
+																	ModifyPosition=false
+																$end 'OverlayLayoutAttribute'
+															$end 'Dock_2'
+														$end 'DockableOverlayLayoutAttribute'
+													$end 'SubMapItem'
+												$end 'MainMapItem'
+											$end 'PlotAttributeStoreMap'
+											PlotType=1
+										$end 'MapItem'
+									$end 'PerViewPlotAttributeStoreMap'
+									IsViewAttribServer=false
+									ViewID=-1
+									$begin 'SourceIDMap'
+										IDMapItem(0, 0, -1, 3)
+										IDMapItem(1, 0, -1, 4)
+									$end 'SourceIDMap'
+									$begin 'TraceCharacteristicsMgr'
+									$end 'TraceCharacteristicsMgr'
+									$begin 'CartesianXMarkerManager'
+										RefMarkerID=-1
+										CurrentMarkerID=-1
+										$begin 'ReferenceCurves'
+										$end 'ReferenceCurves'
+									$end 'CartesianXMarkerManager'
+									$begin 'CartesianYMarkerManager'
+									$end 'CartesianYMarkerManager'
+									$begin 'ViewRecordExpansion'
+										ExpMap(3, true, 4, true)
+										ViewID=22
+									$end 'ViewRecordExpansion'
+									XAxisStackID=-1
+									$begin 'AllTransSrcDwg'
+										$begin 'PT'
+											ID=1
+											TransSrcDwg(-1, 0, 21, 1, 17, 2, 18, 3, 23, 4, 24, 7, 8, 13, 14)
+										$end 'PT'
+									$end 'AllTransSrcDwg'
+									$begin 'AllPtSVID'
+										PtID(1, -1, 6)
+									$end 'AllPtSVID'
+								$end 'PlotDisplayDataManager'
+							$end 'Report2D'
+						$end 'Inductor Current and Capacitor Voltage'
+					$end 'Reports'
+					$begin 'ReportsWindowInfoList'
+						$begin 'Inductor Current and Capacitor Voltage'
+							ReportID=2
+							$begin 'WindowInfoList'
+								$begin 'Report2D'
+								$end 'Report2D'
+							$end 'WindowInfoList'
+						$end 'Inductor Current and Capacitor Voltage'
+					$end 'ReportsWindowInfoList'
+				$end 'ReportSetup'
+				$begin 'Properties'
+				$end 'Properties'
+				$begin 'UserDefinedDocument'
+					$begin 'Data'
+					$end 'Data'
+				$end 'UserDefinedDocument'
+				$begin 'DCDisplayOption'
+					UseDefault=true
+					Current(true, 16711807, 3)
+					Voltage(true, 128, 3)
+					Font('Arial', 'Regular', 8)
+					Devices('Simplorer Elements\\Basic Elements VHDLAMS\\Circuit\\Passive Elements:c', 'Simplorer Elements\\Basic Elements VHDLAMS\\Circuit\\Passive Elements:l', 'Simplorer Elements\\Basic Elements VHDLAMS\\Circuit\\Passive Elements:r', 'Simplorer Elements\\Basic Elements VHDLAMS\\Circuit\\Sources:e', 'Simplorer Elements\\Basic Elements VHDLAMS\\Circuit\\Sources:i', 'Simplorer Elements\\Basic Elements VHDLAMS\\Measurement\\Electrical:am', 'Simplorer Elements\\Basic Elements VHDLAMS\\Measurement\\Fluidic:qm', 'Simplorer Elements\\Basic Elements VHDLAMS\\Measurement\\Magnetic:fluxm', 'Simplorer Elements\\Basic Elements VHDLAMS\\Measurement\\Mechanical\\Displacement-Force-Representation\\Rotational:fm_rotb', 'Simplorer Elements\\Basic Elements VHDLAMS\\Measurement\\Mechanical\\Displacement-Force-Representation\\Rotational:fm_trb', 'Simplorer Elements\\Basic Elements VHDLAMS\\Measurement\\Mechanical\\Velocity-Force-Representation\\Rotational:fm_rot', 'Simplorer Elements\\Basic Elements VHDLAMS\\Measurement\\Mechanical\\Velocity-Force-Representation\\Rotational:fm_tr', 'Simplorer Elements\\Basic Elements VHDLAMS\\Measurement\\Thermal:h', 'Simplorer Elements\\Basic Elements VHDLAMS\\Physical Domains\\Fluidic:lhyd', 'Simplorer Elements\\Basic Elements VHDLAMS\\Physical Domains\\Fluidic:rhyd', 'Simplorer Elements\\Basic Elements VHDLAMS\\Physical Domains\\Magnetic:rmag', 'Simplorer Elements\\Basic Elements VHDLAMS\\Physical Domains\\Thermal:rth', 'Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements:C', 'Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements:L', 'Simplorer Elements\\Basic Elements\\Circuit\\Passive Elements:R', 'Simplorer Elements\\Basic Elements\\Circuit\\Sources:E', 'Simplorer Elements\\Basic Elements\\Circuit\\Sources:I', 'Simplorer Elements\\Basic Elements\\Measurement\\Electrical:AM', 'Simplorer Elements\\Basic Elements\\Measurement\\Fluidic:QM', 'Simplorer Elements\\Basic Elements\\Measurement\\Magnetic:FLUXM', 'Simplorer Elements\\Basic Elements\\Measurement\\Mechanical\\Displacement-Force-Representation\\Rotational:FM_ROTB', 'Simplorer Elements\\Basic Elements\\Measurement\\Mechanical\\Displacement-Force-Representation\\Rotational:FM_TRB', 'Simplorer Elements\\Basic Elements\\Measurement\\Mechanical\\Velocity-Force-Representation\\Rotational:FM_ROT', 'Simplorer Elements\\Basic Elements\\Measurement\\Mechanical\\Velocity-Force-Representation\\Rotational:FM_TR', 'Simplorer Elements\\Basic Elements\\Measurement\\Thermal:HFM', 'Simplorer Elements\\Basic Elements\\Physical Domains\\Fluidic:LHYD', 'Simplorer Elements\\Basic Elements\\Physical Domains\\Fluidic:RHYD', 'Simplorer Elements\\Basic Elements\\Physical Domains\\Magnetic:RMAG', 'Simplorer Elements\\Basic Elements\\Physical Domains\\Thermal:RTH')
+					Other(true, false, '', true, true)
+				$end 'DCDisplayOption'
+			$end 'SimplorerCircuit'
+		$end 'Instance'
+		$begin 'SODInfo'
+		$end 'SODInfo'
+	$end 'DataInstances'
+	$begin 'WBSystemIDToDesignInstanceIDMap'
+	$end 'WBSystemIDToDesignInstanceIDMap'
+	$begin 'WBSysIDSysDetails'
+	$end 'WBSysIDSysDetails'
+	$begin 'WBConnIDConnDetails'
+	$end 'WBConnIDConnDetails'
+$end 'AnsoftProject'
+$begin 'ProjectPreview'
+	Thumbnail64='/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE\
+BAQICAQECAQEBAgICAgICAgICAQICAgICAgICAgL/2wBDAQEBAQEBAQEBAQECAQEBAgICAgICAgICAg\
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgL/wAARCABgAGADASIAAhEBAxEB/\
+8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQR\
+BRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUp\
+TVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5us\
+LDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAA\
+AECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHB\
+CSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ\
+3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4u\
+Pk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9sfjp/wAHRf7AP7P3xt+MXwG8ZfCD9sLU/F/wS\
++KfxC+EXivUvDHgD4LXvhvUPEnw28W6v4N12+8PXmq/tA2V1d6HLqmi3UlpLc2dpcSW8kbTW0EhaJPL\
+P+Iuf/gm7/0RP9t7/wANv8B//olK/Rb4m/8ABA3/AIJMfGP4k/EH4u/Ef9lD/hI/iH8VPHHiz4j+PPE\
+P/C9f2ldI/t3xn4416/8AE/ijWf7J0H4x2tjpf2rXNUvp/s9lbW9pB5/lW8EMKpGvD/8AEON/wRl/6M\
+3/APNhv2qv/n41/RuCzb6LscHhI4/hjiqpjo0qarSp1MH7OVVQXtHC+YxfI58zjdJ8trpbHw9XDeILq\
+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\
+KKKKACiiigAooooA//2Q=='
+	$begin 'DesignInfo'
+		DesignName='cuk'
+		Notes=''
+		Factory='Simplorer'
+		IsSolved=false
+		'Nominal Setups'[1: 'TR']
+		'Optimetrics Setups'[0:]
+		'Optimetrics Experiment Types'[0:]
+		Image64='/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE\
+BAQICAQECAQEBAgICAgICAgICAQICAgICAgICAgL/2wBDAQEBAQEBAQEBAQECAQEBAgICAgICAgICAg\
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgL/wAARCADIAMgDASIAAhEBAxEB/\
+8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQR\
+BRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUp\
+TVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5us\
+LDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAA\
+AECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHB\
+CSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ\
+3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4u\
+Pk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD+/iiviH9sn/go7+xl/wAE/f8AhXH/AA118ZP+F\
+Sf8Lb/4S/8A4V9/xbz4q+Pf+Eg/4QL/AIRf/hLP+SZeBta/sr7J/wAJn4a/4/vs3n/2l/o3neTceV8Q\
+/wDERz/wRl/6PI/815/aq/8AnHV9blnAPHed4GhmeTcFZvm+W4nm9niMLluMxFCpyTlTnyVaVGdOfJU\
+hOEuWT5ZxlF2lFpebiM5yfCVp4fFZrhsNXp25oVK9KE43SkrxlNSV4tNXWqaa0Z+3lFfiH/xEc/8ABG\
+X/AKPI/wDNef2qv/nHUf8AERz/AMEZf+jyP/Nef2qv/nHV3/8AELPE7/o3Gff+GfMP/mcx/wBYcg/6H\
+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\
+6G1e5kgTYW2rte7uDkAE+ZgkgLgA/XzwtLJ/Z9t/oGpnHj34iMMat47G8t4n8bZij8vRT5cy7jvkh3X\
+T+U/2iOPzLry/xd8GsW/4OhrktFNEf+HDWs/LPPqlwxz/AMFI5mOH1W2ikGCSrYX5njZ5dty88abFpo\
+v/AAUCsY4orW2/4L/RRw6pqutRL53/AAa2Pt1PW7rUr3U7nMkpLebc6vqLbCTGn2jbGiKiBc34G/B/4\
+y/CL9s3Uf28vGf7H3/BZ79pH9oC/wD2ZtT/AGS4NQ+NfxD/AOCCuieFdK+EGp/F/T/ji1rp/hn9nb9p\
+PwDHJ4gi8fWuoSxX11Jct9m8QXdtKkscdh9iAP0l/wCCaf8Aybr8Rv8As/8A/wCCsX/r039sivv+viD\
+/AIJ5eBviZ4C/Zuv7P4u/DbxB8IPG3jT9p/8Abw+Ncnw28Wa58PfEfirwn4V/aF/bp/aN+PHw70/xNq\
+3wo8beJPDsviB/h38R/Cs97FpWu6pbWtzdSWpu3lhkA+36ACiiigAooooAKKKKACiiigAooooAKKKKA\
+CiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKK\
+ACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKK\
+KACiiigAooooAKKKKACiiigAooooA/9k='
+	$end 'DesignInfo'
+$end 'ProjectPreview'

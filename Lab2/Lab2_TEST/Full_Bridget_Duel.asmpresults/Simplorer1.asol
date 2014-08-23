@@ -1,0 +1,67 @@
+$begin '$base_index$'
+  $begin 'properties'
+    all_levels=000000000000
+    time(year=000000002014, month=000000000008, day=000000000018, hour=000000000016, min=000000000029, sec=000000000058)
+    version=000000000000
+  $end 'properties'
+  $begin '$base_index$'
+    $index$(pos=000000001488, lin=000000000047, lvl=000000000000)
+  $end '$base_index$'
+$end '$base_index$'
+$begin 'SolutionBlock1'
+	ProductName='Simplorer'
+	CircuitName='Simplorer1'
+	VersionID=232
+	PostProcess=false
+	LossLess=true
+	NextUniqueID=1
+	MoveBackwards=false
+	$begin 'VariationIDs'
+		Map(V='', ID=134)
+	$end 'VariationIDs'
+$end 'SolutionBlock1'
+$begin 'BlockMapName'
+	FileHeader='SolutionBlock1'
+	'SolutionKey(SimSetup=1, Instance=\'\', Solution=0, VersionID=232)'='SolutionBlock46'
+	'SolutionKey(SimSetup=1, Instance=\'SetupDefinition\', Solution=-1, VersionID=232)'='SolutionBlock48'
+	'SolutionKey(SimSetup=1, Instance=\'SolutionDefinition\', Solution=0, VersionID=232)'='SolutionBlock47'
+$end 'BlockMapName'
+$begin 'SolutionBlock47'
+	DXasNominal=-1
+	$begin 'SolVars'
+	$end 'SolVars'
+	SolutionName='TR'
+	SolutionID=0
+	V=232
+	$begin 'States'
+		F(VID=134, Ver=232)
+	$end 'States'
+	$begin 'Definition'
+		SamplingInterpolation=false
+		Frequencies()
+		SolutionType=1
+		CenterFreq=0
+	$end 'Definition'
+$end 'SolutionBlock47'
+$begin 'SolutionBlock48'
+	SimSetupID=1
+	SimSetupName='TR'
+	VersionID=232
+$end 'SolutionBlock48'
+$begin 'SolutionBlock46'
+	VariationDataID=-1
+	SDBName=''
+	Run=0
+	OptiInfo()
+$end 'SolutionBlock46'
+$begin '$index$'
+	$begin '$index$'
+		SolutionBlock46(pos=1389, lin=41, lvl=0)
+		SolutionBlock1(pos=370, lin=1, lvl=0)
+		BlockMapName(pos=617, lin=13, lvl=0)
+		SolutionBlock47(pos=983, lin=19, lvl=0)
+		SolutionBlock48(pos=1293, lin=36, lvl=0)
+		$base_index$(pos=0, lin=1, lvl=0)
+		$index$(pos=1488, lin=47, lvl=0)
+	$end '$index$'
+$end '$index$'
